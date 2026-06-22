@@ -75,9 +75,10 @@ describe("Task 2.1 — Hero: correct new tokens", () => {
     expect(src).toContain("font-light");
   });
 
-  it("uses bg-signalgray-900 for terminal mockup", () => {
+  it("terminal mockup is extracted — hero.tsx has no signalgray-900", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("signalgray-900");
+    // Terminal was extracted to terminal.tsx in Task 2.2
+    expect(src).not.toContain("signalgray-900");
   });
 
   it("primary CTA has border-white/15 (Pattern B)", () => {
