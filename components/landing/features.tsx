@@ -39,26 +39,29 @@ export function Features() {
   ];
 
   return (
-    <section id="features" className="py-24 px-6 border-t border-white/[0.06]">
+    <section id="features" className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
       <div className="max-w-5xl mx-auto">
-        <p className="text-xs font-mono text-emerald-400 tracking-widest uppercase mb-4">
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
           Features
         </p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-16">
+        <h2
+          style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+          className="font-light text-white mb-16"
+        >
           Everything a discipline layer needs.
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-xl overflow-hidden">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 rounded-none">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="bg-[#080808] p-8 hover:bg-white/[0.02] transition-colors"
+              className="bg-signalgray-800 p-10 hover:bg-signalgray-900 transition-colors duration-200"
             >
-              <div className="text-2xl text-emerald-400/60 mb-4 font-mono">
+              <div className="text-2xl text-white/50 mb-4 font-mono">
                 {feature.icon}
               </div>
-              <h3 className="font-semibold text-white mb-3">{feature.title}</h3>
-              <p className="text-white/40 text-sm leading-relaxed">
+              <h3 className="font-medium text-white mb-3">{feature.title}</h3>
+              <p className="text-white/60 text-[1.0625rem] leading-[1.65]">
                 {feature.description}
               </p>
             </div>

@@ -1,52 +1,64 @@
+import Link from "next/link";
+
 export function Install() {
   return (
-    <section className="py-24 px-6 border-t border-white/[0.06]">
+    <section className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
       <div className="max-w-3xl mx-auto">
-        <div className="relative rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden p-12 text-center">
-          {/* Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none" />
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
+          Get Started
+        </p>
+        <h2
+          style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+          className="font-light text-white mb-4"
+        >
+          Stop starting from zero.
+        </h2>
+        <p className="text-white/60 text-[1.0625rem] leading-[1.65] mb-10 max-w-lg">
+          Install SuperSpecs once. Every AI session that follows starts informed,
+          not blind. Knowledge compounds. Problems stay solved.
+        </p>
 
-          <p className="text-xs font-mono text-emerald-400 tracking-widest uppercase mb-4">
-            Get Started
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Stop starting from zero.
-          </h2>
-          <p className="text-white/40 mb-10 max-w-lg mx-auto">
-            Install SuperSpecs once. Every AI session that follows starts informed,
-            not blind. Knowledge compounds. Problems stay solved.
-          </p>
-
-          <div className="bg-black/40 rounded-xl border border-white/[0.08] p-5 mb-8 text-left font-mono text-sm space-y-3">
+        {/* Terminal mockup */}
+        <div className="rounded-lg border border-white/10 bg-signalgray-900 overflow-hidden mb-8">
+          {/* Title bar */}
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+            <span className="ml-2 text-[0.75rem] text-white/40 font-mono">terminal</span>
+          </div>
+          {/* Content */}
+          <div className="p-6 font-mono text-sm leading-[1.7] space-y-3">
             <div className="flex gap-3">
-              <span className="text-emerald-400 select-none">$</span>
-              <span className="text-white/80">npm install -g superspecs</span>
+              <span className="text-white/70 select-none">$</span>
+              <span className="text-white">npm install -g superspecs</span>
             </div>
             <div className="flex gap-3">
-              <span className="text-emerald-400 select-none">$</span>
-              <span className="text-white/80">cd your-project && superspecs install</span>
+              <span className="text-white/70 select-none">$</span>
+              <span className="text-white">cd your-project && superspecs install</span>
             </div>
-            <div className="text-white/30 pl-6 text-xs">
+            <div className="text-white/40 pl-6 text-xs">
               ✓ Skills linked to all your AI agents
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              href="https://github.com/fokkerone/superspecs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 py-3 rounded-full transition-colors text-sm"
-            >
-              View on GitHub
-            </a>
-            <a
-              href="/docs"
-              className="inline-flex items-center gap-2 border border-white/10 hover:border-white/20 text-white/70 hover:text-white font-medium px-6 py-3 rounded-full transition-colors text-sm"
-            >
-              Read the docs →
-            </a>
-          </div>
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row items-start gap-4">
+          <Link
+            href="https://github.com/fokkerone/superspecs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block border border-white/15 px-6 py-3 text-sm font-medium text-white hover:border-white/25 transition-colors duration-200 rounded-sm"
+          >
+            View on GitHub
+          </Link>
+          <Link
+            href="/docs"
+            className="link-underline font-medium text-white/70 text-sm py-3"
+          >
+            Read the docs →
+          </Link>
         </div>
       </div>
     </section>
