@@ -1,11 +1,15 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Hero() {
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainer = useScrollContainer();
+  const prefersReduced = useReducedMotion();
 
   useEffect(() => {
     const isInternalNav =
@@ -13,47 +17,87 @@ export function Hero() {
     if (!isInternalNav) setShouldAnimate(true);
   }, []);
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    container: scrollContainer,
+    offset: ["start start", "end start"],
+  });
+
+  const headlineY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["0%", "-25%"],
+  );
+
   return (
-    <section className="relative pt-40 pb-32 md:pt-48 md:pb-40 px-5 md:px-10 overflow-hidden">
-      <div className="relative max-w-5xl mx-auto">
-        {/* Eyebrow */}
-        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
+    <section
+      ref={sectionRef}
+      className="bg-signalgray-100 min-h-screen flex flex-col justify-between overflow-hidden"
+    >
+      {/* Eyebrow — oben, unter dem fixen Header */}
+      <div className="px-6 md:px-8 pt-20 md:pt-24">
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-signalgray-800/50">
           Works with Claude Code · Cursor · OpenCode · Copilot · Codex · Gemini CLI
         </p>
+      </div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={shouldAnimate ? { clipPath: "inset(100% 0 0 0)", y: "80%" } : false}
-          animate={{ clipPath: "inset(0% 0 0 0)", y: "0%" }}
-          transition={{ duration: 1.25, ease: EASE_ENTER_TUPLE }}
-          style={{
-            fontSize: "clamp(3rem, 8vw, 8rem)",
-            letterSpacing: "-0.03em",
-            lineHeight: 1.05,
-          }}
-          className="font-light text-white mb-6"
-        >
-          AI coding that compounds.
-        </motion.h1>
-
-        <p className="text-[1.0625rem] leading-[1.65] text-white/60 max-w-2xl mb-10">
-          Spec-driven planning. Parallel TDD execution.{" "}
-          <span className="text-white/80">A wiki that never forgets.</span>
-        </p>
-
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row items-start gap-4">
-          <Link
-            href="https://github.com/fokkerone/superspecs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block border border-white/15 px-6 py-3 text-sm font-medium text-white hover:border-white/25 transition-colors duration-200 rounded-sm"
+      {/* Unterer Block — Mega-Headline + Sub-Text + CTA */}
+      <div className="pb-16 md:pb-24">
+        {/* Mega-Headline */}
+        <div className="overflow-hidden mb-6">
+          <motion.div
+            initial={shouldAnimate ? { clipPath: "inset(100% 0 0 0)" } : false}
+            animate={{ clipPath: "inset(0% 0 0 0)" }}
+            transition={{ duration: 1.25, ease: EASE_ENTER_TUPLE }}
           >
-            npm install -g superspecs
-          </Link>
-          <Link href="/docs" className="link-underline font-medium text-white/70 text-sm py-3">
-            Read the docs →
-          </Link>
+            <motion.h1
+              style={{
+                y: headlineY,
+                fontSize: "clamp(5rem, 15vw, 18rem)",
+                letterSpacing: "-0.03em",
+                lineHeight: 0.95,
+                willChange: "transform",
+              }}
+              className="font-extrabold text-signalgray-800 whitespace-nowrap px-6 md:px-8"
+            >
+              AI coding that compounds.
+            </motion.h1>
+          </motion.div>
+        </div>
+
+        {/* Sub-Text + CTA */}
+        <div className="px-6 md:px-8 max-w-5xl">
+          <motion.p
+            initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: EASE_ENTER_TUPLE }}
+            className="text-[1.0625rem] leading-[1.65] text-signalgray-800/70 max-w-2xl mb-10"
+          >
+            Spec-driven planning. Parallel TDD execution.{" "}
+            <span className="text-signalgray-800/90">A wiki that never forgets.</span>
+          </motion.p>
+
+          <motion.div
+            initial={shouldAnimate ? { opacity: 0, y: 16 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.45, ease: EASE_ENTER_TUPLE }}
+            className="flex flex-col sm:flex-row items-start gap-4"
+          >
+            <Link
+              href="https://github.com/fokkerone/superspecs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border border-signalgray-800/15 px-6 py-3 text-sm font-medium text-signalgray-800 hover:border-signalgray-800/30 transition-colors duration-200 rounded-sm"
+            >
+              npm install -g superspecs
+            </Link>
+            <Link
+              href="/docs"
+              className="link-underline font-medium text-signalgray-800/70 text-sm py-3"
+            >
+              Read the docs →
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>

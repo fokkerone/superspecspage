@@ -65,25 +65,24 @@ describe("Task 2.1 — Hero: no old aesthetic tokens", () => {
 });
 
 describe("Task 2.1 — Hero: correct new tokens", () => {
-  it("heading has clamp(3rem in style", () => {
+  it("heading has clamp(5rem — mega-headline sizing", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("clamp(3rem");
+    expect(src).toContain("clamp(5rem");
   });
 
-  it("uses font-light on display heading", () => {
+  it("uses font-extrabold on display heading (replaces font-light)", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("font-light");
+    expect(src).toContain("font-extrabold");
   });
 
   it("terminal mockup is extracted — hero.tsx has no signalgray-900", () => {
     const src = readFileSync(srcPath, "utf-8");
-    // Terminal was extracted to terminal.tsx in Task 2.2
     expect(src).not.toContain("signalgray-900");
   });
 
-  it("primary CTA has border-white/15 (Pattern B)", () => {
+  it("primary CTA has border-signalgray-800/15 (dark variant for light bg)", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("border-white/15");
+    expect(src).toContain("border-signalgray-800/15");
   });
 
   it("primary CTA has rounded-sm", () => {
