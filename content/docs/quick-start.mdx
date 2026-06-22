@@ -1,0 +1,49 @@
+---
+title: Quick Start
+description: Get SuperSpecs running in your project in under 5 minutes
+order: 2
+---
+
+# Quick Start
+
+## Install
+
+```bash
+# Install globally
+npm install -g superspecs
+
+# Run in your project to symlink skills into all your AI agents
+cd your-project
+superspecs install
+
+# Or without a global install
+npx superspecs install
+```
+
+## First Session
+
+Open your agent and say: **"Tell me about your superspecs"**
+
+The agent will confirm SuperSpecs is active and explain the available commands.
+
+## Command Format by Agent
+
+| Agent | Format |
+|---|---|
+| Claude Code / Cursor | `/superspecs:techstack` |
+| OpenCode / Aider | `/superspecs-techstack` |
+
+## First Feature Workflow
+
+```
+/superspecs:techstack    Define stack, get skill & library recommendations
+/superspecs:discuss      What are we building and why?
+/superspecs:spec         Write the spec
+/superspecs:grill        Stress-test spec against wiki + techstack
+/superspecs:pick-spec    Confirm it fits a clean context
+/superspecs:branch       Create worktree
+/superspecs:subagent     Start execution (TDD runs inside each task)
+/superspecs:check-tests  Verify everything passes
+/superspecs:wiki         Distill to knowledge base
+/superspecs:ship         PR + archive
+```
