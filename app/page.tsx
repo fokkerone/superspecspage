@@ -6,12 +6,14 @@ import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Install } from "@/components/landing/install";
 import { Problem } from "@/components/landing/problem";
+import { Terminal } from "@/components/landing/terminal";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-signalgray-800 text-white">
+    <main>
       <Header />
       <Hero />
+      <Terminal />
       <Problem />
       <HowItWorks />
       <Features />

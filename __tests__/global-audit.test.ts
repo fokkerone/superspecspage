@@ -50,9 +50,10 @@ describe("Task 3.1 — no cold-black backgrounds", () => {
     expect(violations).toEqual([]);
   });
 
-  it("app/page.tsx uses bg-signalgray-800", () => {
+  it("app/page.tsx main has no hardcoded bg (sections carry their own backgrounds)", () => {
     const src = readFileSync(resolve(cwd, "app/page.tsx"), "utf-8");
-    expect(src).toContain("signalgray-800");
+    // Sections carry their own bg-signalgray-* — main should be bare
+    expect(src).not.toMatch(/<main[^>]*bg-signalgray-800/);
   });
 });
 
