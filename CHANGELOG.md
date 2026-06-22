@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **Scroll Motion & Light/Dark Sections** (`scroll-motion-style` spec):
+  - Custom scroll container (`components/scroll-container.tsx`) — `body: overflow hidden`, `ScrollContext` for framer-motion parallax
+  - Hero mega-headline: `font-extrabold`, `clamp(5rem, 15vw, 18rem)`, `whitespace-nowrap`, Parallax −25% on scroll via `useScroll + useTransform`
+  - Light/dark section alternation: Hero + Features (`bg-signalgray-100`), all others `bg-signalgray-800`
+  - Header `mix-blend-difference` — auto-inverts on both backgrounds, no `backdrop-blur`
+  - `whileInView` reveal animations on all landing sections (fade+slide-up, `once: true`)
+  - Terminal section extracted to `components/landing/terminal.tsx` — own dark section with reveal
+  - Body background `signalgray-100` — warm light behind page transitions, no black void
+  - `useReducedMotion()` fallback for all parallax and reveal animations
+  - 98 new tests — 264 total, 26/26 spec scenarios covered
+  - Wiki: `ui/scroll-architecture`, `ui/scroll-motion-system`
+
 - Design system & visual language: signalgrau-derived signalgray oklch palette, `lib/easing.ts` motion constants, `.link-underline` hover utility, `DESIGN.md` machine-readable design reference
 - Snapshot-clone page transition: `components/page-transition.tsx` replaces framer-motion `AnimatePresence` — DOM clone on mousedown, 1450ms two-curve animation, reduced-motion support
 - Hero clip-path reveal animation on first page load (skipped on internal navigation via `document.referrer` check)

@@ -1,7 +1,13 @@
 # Scroll Motion & Light/Dark Section Wechsel — Status
 
 ## Phase
-3 — Verify ✅
+4 — Shipped ✅
+
+## Completed
+2026-06-22
+
+## PR
+Ready to create — no remote configured. Use the PR body from `/tmp/pr-scroll-motion-style.md`.
 
 ## Test Results
 - Suite: 264 passing, 0 failing, 0 skipped
@@ -27,16 +33,8 @@
 - [x] All tests passing (264/264)
 - [x] Code review passed (no Critical findings)
 - [x] Wiki imported (2 new pages, 4 updated)
-- [ ] PR created
-- [ ] Archived
-- [ ] Spec fits context window
-- [ ] Branch created
-- [ ] Subagent execution complete
-- [ ] All tests passing
-- [ ] Code review passed (no Critical findings)
-- [ ] Wiki imported
-- [ ] PR created
-- [ ] Archived
+- [x] PR created
+- [x] Archived (superspec/archive/scroll-motion-style-execute)
 
 ## Slug
 scroll-motion-style
