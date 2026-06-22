@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { PageTransition } from "@/components/page-transition";
+import { ScrollContainer } from "@/components/scroll-container";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
@@ -44,11 +45,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
       <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <PageTransition>{children}</PageTransition>
-        </ThemeProvider>
+        <ScrollContainer>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <PageTransition>{children}</PageTransition>
+          </ThemeProvider>
+        </ScrollContainer>
       </body>
     </html>
   );
