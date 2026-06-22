@@ -1,3 +1,7 @@
+"use client";
+import { motion } from "framer-motion";
+import { EASE_ENTER_TUPLE } from "@/lib/easing";
+
 export function Features() {
   const features = [
     {
@@ -39,32 +43,42 @@ export function Features() {
   ];
 
   return (
-    <section id="features" className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
+    <section id="features" className="bg-signalgray-100 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-5xl mx-auto">
-        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-signalgray-800/50 mb-4">
           Features
         </p>
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: EASE_ENTER_TUPLE }}
           style={{
             fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
             letterSpacing: "-0.02em",
             lineHeight: 1.1,
           }}
-          className="font-light text-white mb-16"
+          className="font-light text-signalgray-800 mb-16"
         >
           Everything a discipline layer needs.
-        </h2>
+        </motion.h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 rounded-none">
-          {features.map((feature) => (
-            <div
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-signalgray-800/10 rounded-none">
+          {features.map((feature, i) => (
+            <motion.div
               key={feature.title}
-              className="bg-signalgray-800 p-10 hover:bg-signalgray-900 transition-colors duration-200"
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE_ENTER_TUPLE }}
+              className="bg-signalgray-200 p-10 hover:bg-signalgray-300/20 transition-colors duration-200"
             >
-              <div className="text-2xl text-white/50 mb-4 font-mono">{feature.icon}</div>
-              <h3 className="font-medium text-white mb-3">{feature.title}</h3>
-              <p className="text-white/60 text-[1.0625rem] leading-[1.65]">{feature.description}</p>
-            </div>
+              <div className="text-2xl text-signalgray-800/50 mb-4 font-mono">{feature.icon}</div>
+              <h3 className="font-medium text-signalgray-800 mb-3">{feature.title}</h3>
+              <p className="text-signalgray-800/70 text-[1.0625rem] leading-[1.65]">
+                {feature.description}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>

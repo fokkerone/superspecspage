@@ -1,3 +1,7 @@
+"use client";
+import { motion } from "framer-motion";
+import { EASE_ENTER_TUPLE } from "@/lib/easing";
+
 export function HowItWorks() {
   const phases = [
     {
@@ -38,12 +42,16 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
+    <section id="how-it-works" className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-5xl mx-auto">
         <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
           How It Works
         </p>
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: EASE_ENTER_TUPLE }}
           style={{
             fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
             letterSpacing: "-0.02em",
@@ -52,12 +60,16 @@ export function HowItWorks() {
           className="font-light text-white mb-16"
         >
           Five phases. One discipline.
-        </h2>
+        </motion.h2>
 
         <div className="space-y-px bg-white/10 rounded-none">
-          {phases.map((phase) => (
-            <div
+          {phases.map((phase, i) => (
+            <motion.div
               key={phase.number}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, delay: i * 0.1, ease: EASE_ENTER_TUPLE }}
               className="bg-signalgray-800 p-8 grid md:grid-cols-[120px_1fr] gap-8 items-start hover:bg-signalgray-900 transition-colors duration-200"
             >
               <div>
@@ -79,7 +91,7 @@ export function HowItWorks() {
                   {phase.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

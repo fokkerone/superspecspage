@@ -1,12 +1,20 @@
+"use client";
+import { motion } from "framer-motion";
+import { EASE_ENTER_TUPLE } from "@/lib/easing";
+
 export function Problem() {
   return (
-    <section className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
+    <section className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-5xl mx-auto">
         <div className="max-w-2xl">
           <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
             The Problem
           </p>
-          <h2
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: EASE_ENTER_TUPLE }}
             style={{
               fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
               letterSpacing: "-0.02em",
@@ -15,12 +23,18 @@ export function Problem() {
             className="font-light text-white mb-6"
           >
             Every AI session starts from zero.
-          </h2>
-          <p className="text-white/60 text-[1.0625rem] leading-[1.65]">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, delay: 0.15, ease: EASE_ENTER_TUPLE }}
+            className="text-white/60 text-[1.0625rem] leading-[1.65]"
+          >
             The agent hallucinates architecture it didn&apos;t build. Re-solves problems solved
             three sessions ago. Contradicts decisions made last week. The context window resets. The
             knowledge vanishes.
-          </p>
+          </motion.p>
         </div>
 
         <div className="mt-16 grid md:grid-cols-3 gap-px bg-white/10 rounded-none">

@@ -47,9 +47,9 @@ describe("Task 2.3 — Features: correct new tokens", () => {
     expect(src).toContain("signalgray-800");
   });
 
-  it("uses bg-white/10 for grid background", () => {
+  it("uses bg-signalgray-800/10 for grid gap background (light section)", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("bg-white/10");
+    expect(src).toContain("bg-signalgray-800/10");
   });
 
   it("section heading has clamp(1.75rem in style", () => {

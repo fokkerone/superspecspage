@@ -1,26 +1,43 @@
+"use client";
+import { motion } from "framer-motion";
 import Link from "next/link";
+import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Install() {
   return (
-    <section className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
+    <section className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-3xl mx-auto">
-        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
-          Get Started
-        </p>
-        <h2
-          style={{
-            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.1,
-          }}
-          className="font-light text-white mb-4"
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: EASE_ENTER_TUPLE }}
         >
-          Stop starting from zero.
-        </h2>
-        <p className="text-white/60 text-[1.0625rem] leading-[1.65] mb-10 max-w-lg">
+          <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
+            Get Started
+          </p>
+          <h2
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.1,
+            }}
+            className="font-light text-white mb-4"
+          >
+            Stop starting from zero.
+          </h2>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.15, ease: EASE_ENTER_TUPLE }}
+          className="text-white/60 text-[1.0625rem] leading-[1.65] mb-10 max-w-lg"
+        >
           Install SuperSpecs once. Every AI session that follows starts informed, not blind.
           Knowledge compounds. Problems stay solved.
-        </p>
+        </motion.p>
 
         {/* Terminal mockup */}
         <div className="rounded-lg border border-white/10 bg-signalgray-900 overflow-hidden mb-8">
@@ -46,7 +63,13 @@ export function Install() {
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-start gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.3, ease: EASE_ENTER_TUPLE }}
+          className="flex flex-col sm:flex-row items-start gap-4"
+        >
           <Link
             href="https://github.com/fokkerone/superspecs"
             target="_blank"
@@ -58,7 +81,7 @@ export function Install() {
           <Link href="/docs" className="link-underline font-medium text-white/70 text-sm py-3">
             Read the docs →
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
