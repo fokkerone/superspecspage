@@ -3,7 +3,7 @@
 > Machine-readable design system blueprint for AI coding and design agents.
 > Reference adopted: `signalgrau` (local archive at `~/Downloads/signalgrau-main`).
 > Inspirational: betteroff.studio, richardekwonye.com (typography direction only — palette and motion come from signalgrau).
-> Last updated: 2026-06-22 (post-grill rewrite)
+> Last updated: 2026-06-22 (scroll-motion-style spec)
 
 ---
 
@@ -24,8 +24,8 @@ All colors are defined as Tailwind v4 CSS custom properties in `app/globals.css`
 
 | Token | oklch | Approximate hex | Usage |
 |---|---|---|---|
-| `--signalgray-100` | `oklch(0.9074 0.0087 84.57)` | ~`#e8e2d6` | Reserved — light section bg (future) |
-| `--signalgray-200` | `oklch(0.8593 0.0122 79.78)` | ~`#d6cebd` | Reserved — light section bg (future) |
+| `--signalgray-100` | `oklch(0.9074 0.0087 84.57)` | ~`#e8e2d6` | **Body background + Hero + Features section bg** |
+| `--signalgray-200` | `oklch(0.8593 0.0122 79.78)` | ~`#d6cebd` | Feature card backgrounds (light sections) |
 | `--signalgray-300` | `oklch(0.5109 0.002 67.78)` | ~`#7e7c77` | Reserved — mid grey for future use |
 | `--signalgray-700` | `oklch(0.3985 0.0021 67.76)` | ~`#5e5d59` | Reserved — dark mid grey for future use |
 | `--signalgray-800` | `oklch(0.2565 0.004 84.58)` | ~`#383530` | **Primary page background — landing + docs** |
@@ -729,7 +729,109 @@ After implementation, the following files act as the runtime source of truth:
 | `lib/easing.ts` | Easing curves and transition duration constants |
 | `app/globals.css` | CSS custom property declarations (`--signalgray-*`, `--ease-enter`, `--ease-exit`, `--font-sans`) |
 | `components/page-transition.tsx` | Snapshot-clone page transition mechanic |
-| `app/layout.tsx` | Font loading (Geist Sans + Geist Mono) + page transition mount |
+| `components/scroll-container.tsx` | Custom scroll container + ScrollContext |
+| `app/layout.tsx` | Font loading + ScrollContainer (outside PageTransition) |
 | `DESIGN.md` (this file) | Visual decisions reference for AI agents |
+
+---
+
+## 15. Scroll Architecture (scroll-motion-style spec)
+
+### Custom Scroll Container
+
+The site uses a custom scroll container instead of native `body`/`window` scroll.
+
+```
+body { overflow: hidden; background: signalgray-100 }
+  └── ScrollContainer { overflow-y: auto; overflow-x: hidden; height: 100svh }
+       └── ThemeProvider
+            └── PageTransition  ← unverändert, getBoundingClientRect() korrekt
+                 └── pages
+```
+
+**Rule:** `ScrollContainer` is **outside** `ThemeProvider` + `PageTransition`. Never inside. `PageTransition` stays completely untouched — `getBoundingClientRect().top` measures correctly against the viewport because the container is `height: 100svh`.
+
+**Consuming scroll in components:**
+
+```tsx
+import { useScrollContainer } from "@/components/scroll-container";
+import { useScroll, useTransform } from "framer-motion";
+
+const scrollContainer = useScrollContainer();
+const { scrollYProgress } = useScroll({
+  target: sectionRef,
+  container: scrollContainer,
+  offset: ["start start", "end start"],
+});
+```
+
+### Body Background
+
+`body` has `background-color: var(--signalgray-100)` — the warm light color. This ensures the Page Transition exit animation (page scales up and fades out) shows a warm light background at the edges instead of black. Matches the signalgrau reference.
+
+---
+
+## 16. Light/Dark Section System (scroll-motion-style spec)
+
+The landing page alternates between light (`signalgray-100`) and dark (`signalgray-800`) sections:
+
+| Section | Background | Text model |
+|---|---|---|
+| Hero | `bg-signalgray-100` | `text-signalgray-800` + opacity tiers |
+| Terminal | `bg-signalgray-800` | `text-white` + opacity tiers |
+| Problem | `bg-signalgray-800` | `text-white` + opacity tiers |
+| HowItWorks | `bg-signalgray-800` | `text-white` + opacity tiers |
+| Features | `bg-signalgray-100` | `text-signalgray-800` + opacity tiers |
+| Agents | `bg-signalgray-800` | `text-white` + opacity tiers |
+| Install | `bg-signalgray-800` | `text-white` + opacity tiers |
+| Footer | `bg-signalgray-800` | `text-white` + opacity tiers |
+
+### Opacity tiers on light backgrounds (signalgray-100)
+
+The dark-background opacity tiers (`text-white/60` etc.) are **not** directly portable to light sections. On `signalgray-100`, `/60` and below fail AA contrast. Use:
+
+| Usage | Light-bg class | Contrast |
+|---|---|---|
+| Headings | `text-signalgray-800` | ~11:1 AAA ✅ |
+| Body | `text-signalgray-800/90` | ~9:1 AAA ✅ |
+| Muted body | `text-signalgray-800/70` | ~6:1 AA ✅ |
+| Labels / captions | `text-signalgray-800/70` | ~6:1 AA ✅ |
+| **Minimum readable** | `text-signalgray-800/70` | — |
+| Decorative | `text-signalgray-800/50` | ~4.5:1 ✅ |
+
+**Rule:** `/70` is the minimum for readable text on `signalgray-100`. Never use `/60` or below for body text on light sections.
+
+### Header on light/dark sections
+
+The header uses `mix-blend-difference` — no background, no backdrop-blur. Logo and nav links are `text-white` and automatically invert to dark over light sections. `pointer-events-none` on `<header>`, `pointer-events-auto` on the inner container.
+
+---
+
+## 17. Mega-Headline Exception (scroll-motion-style spec)
+
+### font-extrabold (800) — explicit exception
+
+`font-extrabold` (weight 800) is **only permitted** on the Hero mega-headline. All other headings remain `font-light` (300). This is an explicit exception to the general font-weight rules.
+
+**The mega-headline:**
+```tsx
+<motion.h1
+  style={{
+    fontSize: "clamp(5rem, 15vw, 18rem)",
+    letterSpacing: "-0.03em",
+    lineHeight: 0.95,
+    willChange: "transform",
+  }}
+  className="font-extrabold text-signalgray-800 whitespace-nowrap"
+>
+  AI coding that compounds.
+</motion.h1>
+```
+
+- `font-extrabold` — maximum visual weight for the oversize headline
+- `clamp(5rem, 15vw, 18rem)` — fluid sizing, intentionally wider than the viewport
+- `whitespace-nowrap` — never wraps; overflow is clipped by the section's `overflow-hidden`
+- Parallax: `useScroll + useTransform`, `−25%` translateY as user scrolls through Hero
+- `useReducedMotion()` fallback: parallax disabled at `0% → 0%`
 
 When the implementation deviates from this document, **this document is updated** — not the other way around. Stale design docs are worse than no design docs.
