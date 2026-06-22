@@ -7,6 +7,16 @@
 
 ---
 
+## Branch
+
+Branch name: `superspec/scroll-motion-style`
+Type: branch
+Worktree path: N/A
+Created from: main @ 78b61ab
+Created: 2026-06-22
+
+---
+
 ## Execution Strategy
 
 Wave order: Wave 1 → Wave 2 → Wave 3 (parallel) → Wave 4

@@ -1,7 +1,7 @@
 # Scroll Motion & Light/Dark Section Wechsel — Status
 
 ## Phase
-2.1 — Execute › Pick Spec ✅
+2.3 — Execute › All Waves ✅
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -11,9 +11,9 @@
 - [x] Techstack conflicts: none
 - [x] Spec fits context window (~67k / 200k)
 - [x] Phase directory created
-- [ ] Branch created
-- [ ] Subagent execution complete
-- [ ] All tests passing
+- [x] Branch created (superspec/scroll-motion-style)
+- [x] Subagent execution complete (4 waves, 9 tasks)
+- [x] All tests passing (264/264)
 - [ ] Code review passed (no Critical findings)
 - [ ] Wiki imported
 - [ ] PR created
