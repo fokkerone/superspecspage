@@ -1,76 +1,85 @@
+"use client";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
+import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Hero() {
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  useEffect(() => {
+    const isInternalNav =
+      Boolean(document.referrer) && new URL(document.referrer).origin === window.location.origin;
+    if (!isInternalNav) setShouldAnimate(true);
+  }, []);
+
   return (
-    <section className="relative pt-32 pb-24 px-6 overflow-hidden">
-      {/* Grid background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-      {/* Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="relative max-w-5xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 border border-white/10 rounded-full px-4 py-1.5 mb-8 text-xs text-white/50 font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+    <section className="relative pt-40 pb-32 md:pt-48 md:pb-40 px-5 md:px-10 overflow-hidden">
+      <div className="relative max-w-5xl mx-auto">
+        {/* Eyebrow */}
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
           Works with Claude Code · Cursor · OpenCode · Copilot · Codex · Gemini CLI
-        </div>
-
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
-          AI coding that{" "}
-          <span className="text-emerald-400">compounds.</span>
-        </h1>
-
-        <p className="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Spec-driven planning. Parallel TDD execution.{" "}
-          <span className="text-white/60">A wiki that never forgets.</span>
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        {/* Headline */}
+        <motion.h1
+          initial={shouldAnimate ? { clipPath: "inset(100% 0 0 0)", y: "80%" } : false}
+          animate={{ clipPath: "inset(0% 0 0 0)", y: "0%" }}
+          transition={{ duration: 1.25, ease: EASE_ENTER_TUPLE }}
+          style={{
+            fontSize: "clamp(3rem, 8vw, 8rem)",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.05,
+          }}
+          className="font-light text-white mb-6"
+        >
+          AI coding that compounds.
+        </motion.h1>
+
+        <p className="text-[1.0625rem] leading-[1.65] text-white/60 max-w-2xl mb-10">
+          Spec-driven planning. Parallel TDD execution.{" "}
+          <span className="text-white/80">A wiki that never forgets.</span>
+        </p>
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row items-start gap-4">
           <Link
             href="https://github.com/fokkerone/superspecs"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 py-3 rounded-full transition-colors text-sm"
+            className="inline-block border border-white/15 px-6 py-3 text-sm font-medium text-white hover:border-white/25 transition-colors duration-200 rounded-sm"
           >
             npm install -g superspecs
           </Link>
-          <Link
-            href="/docs"
-            className="inline-flex items-center gap-2 border border-white/10 hover:border-white/20 text-white/70 hover:text-white font-medium px-6 py-3 rounded-full transition-colors text-sm"
-          >
+          <Link href="/docs" className="link-underline font-medium text-white/70 text-sm py-3">
             Read the docs →
           </Link>
         </div>
 
         {/* Terminal mockup */}
-        <div className="mt-16 max-w-3xl mx-auto">
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
-              <div className="w-3 h-3 rounded-full bg-white/10" />
-              <div className="w-3 h-3 rounded-full bg-white/10" />
-              <div className="w-3 h-3 rounded-full bg-white/10" />
-              <span className="ml-2 text-xs text-white/20 font-mono">terminal</span>
+        <div className="mt-16 max-w-3xl">
+          <div className="rounded-lg border border-white/10 bg-signalgray-900 overflow-hidden">
+            {/* Title bar */}
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+              <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <span className="ml-2 text-[0.75rem] text-white/40 font-mono">terminal</span>
             </div>
-            <div className="p-6 font-mono text-sm text-left space-y-2">
+            {/* Content */}
+            <div className="p-6 font-mono text-sm leading-[1.7] text-left space-y-2">
               <div className="flex gap-3">
-                <span className="text-emerald-400">$</span>
-                <span className="text-white/70">npx superspecs install</span>
+                <span className="text-white/70">$</span>
+                <span className="text-white">npx superspecs install</span>
               </div>
-              <div className="text-white/30 pl-6">✓ Skills linked to Claude Code</div>
-              <div className="text-white/30 pl-6">✓ Skills linked to Cursor</div>
-              <div className="text-white/30 pl-6">✓ Skills linked to OpenCode</div>
+              <div className="text-white/40 pl-6">✓ Skills linked to Claude Code</div>
+              <div className="text-white/40 pl-6">✓ Skills linked to Cursor</div>
+              <div className="text-white/40 pl-6">✓ Skills linked to OpenCode</div>
               <div className="flex gap-3 mt-4">
-                <span className="text-emerald-400">$</span>
-                <span className="text-white/70">/superspecs:discuss</span>
+                <span className="text-white/70">$</span>
+                <span className="text-white">/superspecs:discuss</span>
               </div>
-              <div className="text-white/30 pl-6">
+              <div className="text-white/40 pl-6">
                 What are we building? Give me the 30-second version...
               </div>
             </div>

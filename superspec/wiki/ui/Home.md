@@ -13,7 +13,10 @@ Frontend patterns, component architecture, routing behaviour, and styling decisi
 
 | Page | Summary |
 |------|---------|
-| [[page-transitions]] | Slide-down page transition system built with framer-motion + Next.js App Router |
+| [[design-system]] | Signalgray palette, CSS token architecture, typography, shape rules |
+| [[easing]] | Two-curve easing system (`EASE_ENTER` / `EASE_EXIT`), `lib/easing.ts` |
+| [[component-patterns]] | Link-underline, CTA patterns A+B, section label, card grid, terminal mockup |
+| [[page-transitions]] | Snapshot-clone page transition: DOM clone on mousedown, 1450ms, two-curve easing |
 
 ## Related domains
 

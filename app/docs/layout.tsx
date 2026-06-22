@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/landing/header";
 
-export default function DocsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { label: "Introduction", href: "/docs/introduction" },
     { label: "Quick Start", href: "/docs/quick-start" },
@@ -13,7 +9,7 @@ export default function DocsLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white">
+    <div className="min-h-screen bg-signalgray-800 text-white">
       <Header />
       <div className="max-w-7xl mx-auto px-6 pt-20 flex gap-12">
         {/* Sidebar */}
@@ -34,7 +30,7 @@ export default function DocsLayout({
               ))}
             </nav>
 
-            <div className="mt-8 pt-8 border-t border-white/[0.06]">
+            <div className="mt-8 pt-8 border-t border-white/10">
               <a
                 href="https://github.com/fokkerone/superspecs"
                 target="_blank"

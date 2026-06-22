@@ -38,34 +38,46 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 px-6 border-t border-white/[0.06]">
+    <section id="how-it-works" className="py-24 md:py-40 px-5 md:px-10 border-t border-white/10">
       <div className="max-w-5xl mx-auto">
-        <p className="text-xs font-mono text-emerald-400 tracking-widest uppercase mb-4">
+        <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-white/50 mb-4">
           How It Works
         </p>
-        <h2 className="text-3xl md:text-4xl font-bold mb-16">
+        <h2
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+          }}
+          className="font-light text-white mb-16"
+        >
           Five phases. One discipline.
         </h2>
 
-        <div className="space-y-px bg-white/[0.04] rounded-xl overflow-hidden">
-          {phases.map((phase, i) => (
+        <div className="space-y-px bg-white/10 rounded-none">
+          {phases.map((phase) => (
             <div
               key={phase.number}
-              className="bg-[#080808] p-8 grid md:grid-cols-[120px_1fr] gap-8 items-start group hover:bg-white/[0.015] transition-colors"
+              className="bg-signalgray-800 p-8 grid md:grid-cols-[120px_1fr] gap-8 items-start hover:bg-signalgray-900 transition-colors duration-200"
             >
               <div>
-                <span className="font-mono text-4xl font-bold text-white/[0.08] group-hover:text-emerald-400/20 transition-colors">
+                <span
+                  className="font-mono font-light text-white/[0.05] leading-none block"
+                  style={{ fontSize: "clamp(4rem, 8vw, 7rem)" }}
+                >
                   {phase.number}
                 </span>
-                <div className="mt-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
+                <div className="font-mono text-[0.7rem] tracking-[0.1em] uppercase text-white/50 mt-1">
                   {phase.label}
                 </div>
               </div>
               <div>
-                <div className="font-mono text-xs text-white/30 mb-3 bg-white/[0.04] inline-block px-3 py-1 rounded">
+                <div className="font-mono text-xs text-white/30 mb-3 bg-white/[0.04] inline-block px-3 py-1 rounded-sm">
                   {phase.command}
                 </div>
-                <p className="text-white/50 leading-relaxed">{phase.description}</p>
+                <p className="text-white/60 leading-relaxed text-[1.0625rem]">
+                  {phase.description}
+                </p>
               </div>
             </div>
           ))}

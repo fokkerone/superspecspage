@@ -24,3 +24,12 @@ Full history of all wiki ingest sessions.
 - **Updated:** Home.md
 - **Domains touched:** ui
 - **Spec:** [[../specs/page-transitions/spec.md]]
+
+---
+
+## [2026-06-22] ingest | ui-style: Design System & Visual Language
+
+- **Created:** ui/design-system.md, ui/easing.md, ui/component-patterns.md
+- **Updated:** ui/page-transitions.md (rewritten — replaces framer-motion AnimatePresence architecture), ui/Home.md, Home.md
+- **Domains touched:** ui
+- **Spec:** [[../specs/ui-style/spec.md]]

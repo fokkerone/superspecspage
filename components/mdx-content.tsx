@@ -1,7 +1,7 @@
 "use client";
 
-import * as runtime from "react/jsx-runtime";
 import { useMemo } from "react";
+import * as runtime from "react/jsx-runtime";
 
 function useMDXComponent(code: string) {
   return useMemo(() => {

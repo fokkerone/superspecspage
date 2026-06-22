@@ -7,7 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* Bind --font-sans so html { @apply font-sans } resolves to Geist Sans */
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -46,6 +47,18 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* SuperSpecs signalgray palette */
+  --color-signalgray-100: var(--signalgray-100);
+  --color-signalgray-200: var(--signalgray-200);
+  --color-signalgray-300: var(--signalgray-300);
+  --color-signalgray-700: var(--signalgray-700);
+  --color-signalgray-800: var(--signalgray-800);
+  --color-signalgray-900: var(--signalgray-900);
+
+  /* Easing — canonical source: lib/easing.ts */
+  --ease-enter: cubic-bezier(0.6, 0, 0.24, 1);
+  --ease-exit: cubic-bezier(0.82, 1, 0.36, 1);
 }
 
 :root {
@@ -81,6 +94,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* SuperSpecs signalgray oklch palette */
+  --signalgray-100: oklch(0.9074 0.0087 84.57);
+  --signalgray-200: oklch(0.8593 0.0122 79.78);
+  --signalgray-300: oklch(0.5109 0.002 67.78);
+  --signalgray-700: oklch(0.3985 0.0021 67.76);
+  --signalgray-800: oklch(0.2565 0.004 84.58);
+  --signalgray-900: oklch(0.1539 0.0021 106.64);
 }
 
 .dark {
@@ -126,5 +147,44 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .link-underline {
+    position: relative;
+    display: inline-flex;
+  }
+  .link-underline::before {
+    content: "";
+    position: absolute;
+    bottom: -0.2em;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(1);
+    transform-origin: right;
+    transition: transform 650ms var(--ease-enter);
+  }
+  .link-underline:hover::before {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -0.2em;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 650ms var(--ease-enter) 0.2s;
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
