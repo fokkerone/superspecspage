@@ -5,6 +5,14 @@
 **Context estimate:** ~14k / 200k ✅
 **Started:** 2026-06-22
 
+## Branch
+
+Branch name: `superspec/ui-style`
+Type: branch
+Worktree path: N/A
+Created from: main @ adbc810
+Created: 2026-06-22
+
 ---
 
 ## Execution Strategy
