@@ -33,3 +33,12 @@ Full history of all wiki ingest sessions.
 - **Updated:** ui/page-transitions.md (rewritten — replaces framer-motion AnimatePresence architecture), ui/Home.md, Home.md
 - **Domains touched:** ui
 - **Spec:** [[../specs/ui-style/spec.md]]
+
+---
+
+## [2026-06-22] ingest | scroll-motion-style: Scroll Motion & Light/Dark Sections
+
+- **Created:** ui/scroll-architecture.md, ui/scroll-motion-system.md
+- **Updated:** ui/design-system.md (signalgray-100/200 now active, font-extrabold exception), ui/page-transitions.md (ScrollContainer gotcha), ui/Home.md, Home.md
+- **Domains touched:** ui
+- **Spec:** [[../specs/scroll-motion-style/spec.md]]

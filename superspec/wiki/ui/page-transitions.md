@@ -1,7 +1,7 @@
 ---
 title: Page Transitions
 summary: Snapshot-clone page transition between all routes. The outgoing page scales up and fades out; the incoming page slides in from below. Hand-rolled CSS transitions — no framer-motion AnimatePresence. Two-curve easing system from lib/easing.ts.
-tags: [ui, animation, routing, page-transitions, snapshot-clone]
+tags: [ui, animation, routing, page-transitions, snapshot-clone, scroll-motion-style]
 spec: "[[../specs/ui-style/spec.md]]"
 created: 2026-06-22
 updated: 2026-06-22
@@ -213,13 +213,15 @@ CSS consumers reference the token, not the literal:
 
 ## Gotchas
 
+- **Custom scroll container — `ScrollContainer` must be outside `PageTransition`:** The `scroll-motion-style` spec introduced a custom `ScrollContainer` div (`overflow-y: auto; height: 100svh`). If `ScrollContainer` were placed _inside_ `PageTransition`, `liveRef.getBoundingClientRect().top` would always return `0` — snapshot-clone renders at wrong position. Solution: `ScrollContainer` wraps `ThemeProvider + PageTransition` in layout.tsx. `PageTransition` is completely unchanged. See [[scroll-architecture]].
+
 - **Programmatic navigation without mousedown:** `router.push()` called programmatically (not from a user click) won't trigger the `mousedown` capture. The `useLayoutEffect` fallback calls `captureSnapshot()` when `!transitioning && !snapshotRef.current` — this covers the first navigation and programmatic pushes at rest.
 
 - **Fast double-click:** If the user clicks a second link before the first transition completes, `frozenPathname` hasn't updated yet — the new click fires on the new page (which is already mounted). The second `mousedown` captures a snapshot of the entering page. Visually acceptable; no crash.
 
 - **Fixed header z-index:** The header uses `z-50` (Tailwind = `z-index: 50`). The exit overlay is `z-0` and new page is `z-1`. No conflict. This is the same resolution as the previous implementation.
 
-- **scroll position on `liveRef`:** `liveRef` is a plain `div` with `minHeight: 100svh`. Scroll is owned by the `body` or `html` element, not `liveRef` — so `getBoundingClientRect().top` may be `0` or negative depending on current scroll. The `translateY(top)` compensates. The signalgrau note: "A plain div (no transform) so overflow:hidden correctly clips the translated clone."
+- **scroll position on `liveRef`:** `liveRef` is a plain `div` with `minHeight: 100svh`. Scroll is owned by `ScrollContainer` (since `scroll-motion-style`). `getBoundingClientRect().top` remains correct because it is always viewport-relative — includes the scroll offset of all ancestors regardless of which element owns the scroll.
 
 - **`exit-snapshot-scroller` CSS:** `globals.css` includes `.exit-snapshot-scroller { scrollbar-width: none }` — retained from the signalgrau reference for the exit overlay container.
 
@@ -241,6 +243,7 @@ CSS consumers reference the token, not the literal:
 ## Related
 
 - [[techstack/profile]] — framer-motion listed as required (for Hero clip-path reveal, not page transitions)
+- [[scroll-architecture]] — custom scroll container; its placement relative to PageTransition is critical
 - `components/page-transition.tsx` — the transition component
 - `lib/easing.ts` — easing constants
 - `app/layout.tsx` — integration point in root layout

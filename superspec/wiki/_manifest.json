@@ -25,6 +25,21 @@
         "ui/Home",
         "Home"
       ]
+    },
+    {
+      "slug": "scroll-motion-style",
+      "ingested_at": "2026-06-22T23:00:00Z",
+      "pages_created": [
+        "ui/scroll-architecture",
+        "ui/scroll-motion-system"
+      ],
+      "pages_updated": [
+        "ui/design-system",
+        "ui/page-transitions",
+        "ui/Home",
+        "Home",
+        "log"
+      ]
     }
   ]
 }

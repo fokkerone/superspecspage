@@ -1,7 +1,18 @@
 # Scroll Motion & Light/Dark Section Wechsel — Status
 
 ## Phase
-2.3 — Execute › All Waves ✅
+3 — Verify ✅
+
+## Test Results
+- Suite: 264 passing, 0 failing, 0 skipped
+- Spec scenarios: 26/26 covered
+- Regressions: none
+
+## Wiki Pages
+- [[ui/scroll-architecture]] — Custom scroll container architecture, ScrollContainer placement, body bg
+- [[ui/scroll-motion-system]] — Mega-headline parallax, light/dark sections, whileInView reveals
+- [[ui/design-system]] — Updated: signalgray-100/200 active, font-extrabold exception
+- [[ui/page-transitions]] — Updated: ScrollContainer gotcha documented
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -14,8 +25,8 @@
 - [x] Branch created (superspec/scroll-motion-style)
 - [x] Subagent execution complete (4 waves, 9 tasks)
 - [x] All tests passing (264/264)
-- [ ] Code review passed (no Critical findings)
-- [ ] Wiki imported
+- [x] Code review passed (no Critical findings)
+- [x] Wiki imported (2 new pages, 4 updated)
 - [ ] PR created
 - [ ] Archived
 - [ ] Spec fits context window

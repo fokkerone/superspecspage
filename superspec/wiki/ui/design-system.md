@@ -1,7 +1,7 @@
 ---
 title: Design System — Signalgray Palette & Tokens
 summary: The SuperSpecs homepage design system. Warm-dark editorial aesthetic derived from the signalgrau reference. Signalgray oklch palette, CSS custom property token architecture, typography rules, and shape constraints.
-tags: [ui, design-system, tokens, typography, signalgray, ui-style]
+tags: [ui, design-system, tokens, typography, signalgray, ui-style, scroll-motion-style]
 spec: "[[../specs/ui-style/spec.md]]"
 created: 2026-06-22
 updated: 2026-06-22
@@ -42,14 +42,14 @@ All colors are defined as oklch values for perceptually uniform manipulation. De
 
 | Token | oklch | Approx hex | Primary use |
 |---|---|---|---|
-| `--signalgray-100` | `oklch(0.9074 0.0087 84.57)` | ~`#e8e2d6` | Reserved — light section bg (future) |
-| `--signalgray-200` | `oklch(0.8593 0.0122 79.78)` | ~`#d6cebd` | Reserved — light section bg (future) |
+| `--signalgray-100` | `oklch(0.9074 0.0087 84.57)` | ~`#e8e2d6` | **Body bg + Hero + Features section bg** |
+| `--signalgray-200` | `oklch(0.8593 0.0122 79.78)` | ~`#d6cebd` | Feature card backgrounds (light sections) |
 | `--signalgray-300` | `oklch(0.5109 0.002 67.78)` | ~`#7e7c77` | Reserved — mid grey (future) |
 | `--signalgray-700` | `oklch(0.3985 0.0021 67.76)` | ~`#5e5d59` | Reserved — dark mid grey (future) |
-| `--signalgray-800` | `oklch(0.2565 0.004 84.58)` | ~`#383530` | **Primary page background** |
+| `--signalgray-800` | `oklch(0.2565 0.004 84.58)` | ~`#383530` | **Primary dark section background** |
 | `--signalgray-900` | `oklch(0.1539 0.0021 106.64)` | ~`#1f1d19` | Inset panels, terminal mockup bg |
 
-The light tokens (100, 200, 300, 700) are defined but currently unused. They exist for future light-bg sections (e.g. a comparison block). ^[inferred]
+`signalgray-100` and `signalgray-200` are now active — used by the Hero, Features, and body background. The "Reserved" note no longer applies. See [[scroll-motion-system]] for the light/dark section system.
 
 ### Text color model
 
@@ -115,11 +115,14 @@ A DM Sans migration (closer to PP Neue Montreal, used by both reference sites) w
 
 | Weight | Class | Use |
 |---|---|---|
-| 300 | `font-light` | Display headings, hero headline |
+| 300 | `font-light` | All display headings, section headings |
 | 400 | `font-normal` | Body text (default) |
 | 500 | `font-medium` | Labels, UI text, section titles |
+| **800** | **`font-extrabold`** | **Hero mega-headline only — explicit exception** |
 
 **Forbidden:** `font-semibold` (600) and `font-bold` (700). This is enforced by the global audit test.
+
+**`font-extrabold` exception:** The Hero mega-headline ("AI coding that compounds.") uses `font-extrabold` (800). This is the only permitted use. The visual impact of the mega-headline requires extreme weight at extreme size — `font-light` at `clamp(5rem, 15vw, 18rem)` reads as fragile. See [[scroll-motion-system#mega-headline parallax]].
 
 ### Fluid type scale
 
@@ -127,7 +130,7 @@ All headings use `clamp()` for fluid sizing. Fixed Tailwind heading classes (`te
 
 | Role | Value |
 |---|---|
-| Display (hero) | `clamp(3rem, 8vw, 8rem)` |
+| **Mega-headline (Hero)** | **`clamp(5rem, 15vw, 18rem)`** |
 | H2 / section | `clamp(1.75rem, 3.5vw, 3rem)` |
 | Phase number (decorative) | `clamp(4rem, 8vw, 7rem)` |
 | Body | `1.0625rem` (fixed — 17px) |
@@ -218,7 +221,7 @@ Opacity tiers are generally one step stronger than for the old `#080808` bg beca
 
 ## Open Questions
 
-- [ ] Light-bg sections using signalgray-100/200: the tokens are defined and reserved. No design or spec exists for them yet.
+- [x] ~~Light-bg sections using signalgray-100/200~~ — resolved by `scroll-motion-style` spec. Hero + Features use `signalgray-100`; feature cards use `signalgray-200`.
 - [ ] Dark-mode toggle for the docs section: `next-themes` is installed but light mode was explicitly out of scope for this spec. The docs section has no light mode.
 
 ## Related
