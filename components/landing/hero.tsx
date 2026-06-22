@@ -47,7 +47,7 @@ export function Hero() {
   const sectionY = useTransform(
     sectionScrollProgress,
     [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["2%", "-2%"],
+    prefersReduced ? ([0, 0] as number[]) : ([40, -40] as number[]),
   );
 
   return (

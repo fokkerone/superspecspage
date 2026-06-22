@@ -34,9 +34,9 @@ for (const file of darkSections) {
       expect(src).toContain("useReducedMotion");
     });
 
-    it("has 3% parallax range", () => {
-      expect(src).toContain('"3%"');
-      expect(src).toContain('"-3%"');
+    it("has parallax range (60px for dark sections)", () => {
+      expect(src).toContain("60");
+      expect(src).toContain("-60");
     });
 
     it("does NOT use sticky positioning", () => {
@@ -65,9 +65,9 @@ describe("Task 2.2 — features: section parallax", () => {
     expect(src).toContain("useReducedMotion");
   });
 
-  it("has parallax range values", () => {
-    expect(src).toContain('"2%"');
-    expect(src).toContain('"-2%"');
+  it("has parallax range values (40px for light sections)", () => {
+    expect(src).toContain("40");
+    expect(src).toContain("-40");
   });
 
   it("does NOT use sticky positioning", () => {
@@ -82,8 +82,8 @@ describe("Task 2.2 — hero: section-level parallax wrapper", () => {
     expect(src).toMatch(/sectionY|sectionParallax|wrapperY/);
   });
 
-  it("section Y uses 2% range", () => {
-    expect(src).toContain('"2%"');
-    expect(src).toContain('"-2%"');
+  it("section Y uses 40px range (light section)", () => {
+    expect(src).toContain("40");
+    expect(src).toContain("-40");
   });
 });

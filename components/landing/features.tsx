@@ -57,7 +57,7 @@ export function Features() {
   const sectionY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["2%", "-2%"],
+    prefersReduced ? ([0, 0] as number[]) : ([40, -40] as number[]),
   );
 
   return (

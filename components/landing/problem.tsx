@@ -18,7 +18,7 @@ export function Problem() {
   const sectionY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["3%", "-3%"],
+    prefersReduced ? ([0, 0] as number[]) : ([60, -60] as number[]),
   );
 
   return (
