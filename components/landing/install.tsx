@@ -8,14 +8,18 @@ export function Install() {
           Get Started
         </p>
         <h2
-          style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+          }}
           className="font-light text-white mb-4"
         >
           Stop starting from zero.
         </h2>
         <p className="text-white/60 text-[1.0625rem] leading-[1.65] mb-10 max-w-lg">
-          Install SuperSpecs once. Every AI session that follows starts informed,
-          not blind. Knowledge compounds. Problems stay solved.
+          Install SuperSpecs once. Every AI session that follows starts informed, not blind.
+          Knowledge compounds. Problems stay solved.
         </p>
 
         {/* Terminal mockup */}
@@ -37,9 +41,7 @@ export function Install() {
               <span className="text-white/70 select-none">$</span>
               <span className="text-white">cd your-project && superspecs install</span>
             </div>
-            <div className="text-white/40 pl-6 text-xs">
-              ✓ Skills linked to all your AI agents
-            </div>
+            <div className="text-white/40 pl-6 text-xs">✓ Skills linked to all your AI agents</div>
           </div>
         </div>
 
@@ -53,10 +55,7 @@ export function Install() {
           >
             View on GitHub
           </Link>
-          <Link
-            href="/docs"
-            className="link-underline font-medium text-white/70 text-sm py-3"
-          >
+          <Link href="/docs" className="link-underline font-medium text-white/70 text-sm py-3">
             Read the docs →
           </Link>
         </div>

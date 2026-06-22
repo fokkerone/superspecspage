@@ -5,10 +5,10 @@
  * RED: these will fail until page-transition.tsx is created and layout.tsx updated
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, act } from "@testing-library/react";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock next/navigation
 const mockPathname = vi.fn(() => "/");
@@ -18,61 +18,39 @@ vi.mock("next/navigation", () => ({
 
 describe("Task 1.4 — file existence and deletion checks", () => {
   it("components/page-transition.tsx exists", () => {
-    const fs = require("fs");
-    expect(
-      fs.existsSync(
-        resolve(process.cwd(), "components/page-transition.tsx"),
-      ),
-    ).toBe(true);
+    const fs = require("node:fs");
+    expect(fs.existsSync(resolve(process.cwd(), "components/page-transition.tsx"))).toBe(true);
   });
 
   it("components/page-transition-wrapper.tsx does NOT exist (deleted)", () => {
-    const fs = require("fs");
-    expect(
-      fs.existsSync(
-        resolve(
-          process.cwd(),
-          "components/page-transition-wrapper.tsx",
-        ),
-      ),
-    ).toBe(false);
+    const fs = require("node:fs");
+    expect(fs.existsSync(resolve(process.cwd(), "components/page-transition-wrapper.tsx"))).toBe(
+      false,
+    );
   });
 
   it("lib/transitions.ts does NOT exist (deleted)", () => {
-    const fs = require("fs");
-    expect(
-      fs.existsSync(resolve(process.cwd(), "lib/transitions.ts")),
-    ).toBe(false);
+    const fs = require("node:fs");
+    expect(fs.existsSync(resolve(process.cwd(), "lib/transitions.ts"))).toBe(false);
   });
 
   it("app/layout.tsx imports PageTransition not PageTransitionWrapper", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "app/layout.tsx"),
-      "utf-8",
-    );
-    expect(content).toContain(
-      'import { PageTransition } from "@/components/page-transition"',
-    );
+    const content = readFileSync(resolve(process.cwd(), "app/layout.tsx"), "utf-8");
+    expect(content).toContain('import { PageTransition } from "@/components/page-transition"');
     expect(content).not.toContain("PageTransitionWrapper");
   });
 });
 
 describe("Task 1.4 — page-transition.tsx source checks", () => {
   it("does NOT import from framer-motion", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).not.toContain("framer-motion");
     expect(content).not.toContain("AnimatePresence");
     expect(content).not.toContain("motion.");
   });
 
   it("imports EASE_ENTER, EASE_EXIT, TRANSITION_DURATION from lib/easing", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("EASE_ENTER");
     expect(content).toContain("EASE_EXIT");
     expect(content).toContain("TRANSITION_DURATION");
@@ -80,62 +58,41 @@ describe("Task 1.4 — page-transition.tsx source checks", () => {
   });
 
   it("includes prefers-reduced-motion check", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("prefers-reduced-motion");
     expect(content).toContain("matchMedia");
   });
 
   it("has use client directive", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain('"use client"');
   });
 
   it("captures snapshot on mousedown with capture:true", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("mousedown");
     expect(content).toContain("capture: true");
     expect(content).toContain("cloneNode");
   });
 
   it("new page starts at translateY(100vh)", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("translateY(100vh)");
   });
 
   it("exit overlay uses translateY(-84%) scale(0.82)", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("translateY(-84%)");
     expect(content).toContain("scale(0.82)");
   });
 
   it("uses TRANSITION_DURATION + 200 for frozenPathname timeout", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     expect(content).toContain("TRANSITION_DURATION + 200");
   });
 
   it("does not have hardcoded 1450 constant (uses import)", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "components/page-transition.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "components/page-transition.tsx"), "utf-8");
     // Should not define a local const with value 1450
     expect(content).not.toMatch(/const\s+DURATION\s*=\s*1450/);
     expect(content).not.toMatch(/const\s+EASE_ENTER\s*=/);
@@ -149,9 +106,7 @@ describe("Task 1.4 — PageTransition renders children", () => {
   });
 
   it("renders children without crashing", async () => {
-    const { PageTransition } = await import(
-      "@/components/page-transition"
-    );
+    const { PageTransition } = await import("@/components/page-transition");
     render(
       <PageTransition>
         <div data-testid="child">content</div>
@@ -161,9 +116,7 @@ describe("Task 1.4 — PageTransition renders children", () => {
   });
 
   it("renders children text", async () => {
-    const { PageTransition } = await import(
-      "@/components/page-transition"
-    );
+    const { PageTransition } = await import("@/components/page-transition");
     render(
       <PageTransition>
         <p>Hello world</p>
@@ -200,9 +153,7 @@ describe("Task 1.4 — reduced motion instant swap", () => {
       })),
     });
 
-    const { PageTransition } = await import(
-      "@/components/page-transition"
-    );
+    const { PageTransition } = await import("@/components/page-transition");
 
     const { rerender } = render(
       <PageTransition>
@@ -226,20 +177,14 @@ describe("Task 1.4 — reduced motion instant swap", () => {
 
 describe("Task 1.4 — no animation code in page files", () => {
   it("app/page.tsx does not import framer-motion", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "app/page.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "app/page.tsx"), "utf-8");
     expect(content).not.toContain("framer-motion");
     expect(content).not.toContain("motion.");
     expect(content).not.toContain("AnimatePresence");
   });
 
   it("app/layout.tsx does not use motion.div directly", () => {
-    const content = readFileSync(
-      resolve(process.cwd(), "app/layout.tsx"),
-      "utf-8",
-    );
+    const content = readFileSync(resolve(process.cwd(), "app/layout.tsx"), "utf-8");
     expect(content).not.toContain("motion.div");
     expect(content).not.toContain("AnimatePresence");
     expect(content).toContain("PageTransition");

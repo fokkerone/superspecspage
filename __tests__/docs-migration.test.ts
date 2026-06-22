@@ -2,9 +2,10 @@
  * Tests for Task 2.9: docs section migration
  * RED: fail until app/docs/layout.tsx and app/docs/[[...slug]]/page.tsx are updated
  */
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 
 const docsLayoutPath = resolve(process.cwd(), "app/docs/layout.tsx");
 const docsPagePath = resolve(process.cwd(), "app/docs/[[...slug]]/page.tsx");

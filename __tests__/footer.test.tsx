@@ -2,14 +2,25 @@
  * Tests for Task 2.7: components/landing/footer.tsx migration
  * RED: fail until footer.tsx is rewritten
  */
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/link", () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
+  default: ({
+    href,
+    children,
+    className,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
   ),
 }));
 

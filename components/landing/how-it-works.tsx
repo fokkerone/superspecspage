@@ -44,7 +44,11 @@ export function HowItWorks() {
           How It Works
         </p>
         <h2
-          style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+          }}
           className="font-light text-white mb-16"
         >
           Five phases. One discipline.

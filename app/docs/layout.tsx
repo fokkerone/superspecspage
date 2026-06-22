@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/landing/header";
 
-export default function DocsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { label: "Introduction", href: "/docs/introduction" },
     { label: "Quick Start", href: "/docs/quick-start" },

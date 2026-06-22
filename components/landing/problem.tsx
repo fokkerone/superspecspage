@@ -7,15 +7,19 @@ export function Problem() {
             The Problem
           </p>
           <h2
-            style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.1,
+            }}
             className="font-light text-white mb-6"
           >
             Every AI session starts from zero.
           </h2>
           <p className="text-white/60 text-[1.0625rem] leading-[1.65]">
-            The agent hallucinates architecture it didn&apos;t build. Re-solves problems
-            solved three sessions ago. Contradicts decisions made last week. The context
-            window resets. The knowledge vanishes.
+            The agent hallucinates architecture it didn&apos;t build. Re-solves problems solved
+            three sessions ago. Contradicts decisions made last week. The context window resets. The
+            knowledge vanishes.
           </p>
         </div>
 
@@ -40,9 +44,7 @@ export function Problem() {
             <div key={item.symptom} className="bg-signalgray-800 p-8">
               <span className="font-mono text-white/30 text-lg mb-4 block">✗</span>
               <h3 className="font-medium text-white mb-2">{item.symptom}</h3>
-              <p className="text-white/60 text-sm leading-relaxed">
-                {item.description}
-              </p>
+              <p className="text-white/60 text-sm leading-relaxed">{item.description}</p>
             </div>
           ))}
         </div>

@@ -2,10 +2,11 @@
  * Tests for Task 2.6: components/landing/agents.tsx migration
  * RED: fail until agents.tsx is rewritten
  */
-import { describe, it, expect } from "vitest";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { describe, expect, it } from "vitest";
 
 const srcPath = resolve(process.cwd(), "components/landing/agents.tsx");
 

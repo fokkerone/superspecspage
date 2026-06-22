@@ -2,10 +2,10 @@
  * Tests for Task 2.3: components/landing/features.tsx migration
  * RED: fail until features.tsx is rewritten
  */
-import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 
 const srcPath = resolve(process.cwd(), "components/landing/features.tsx");
 

@@ -2,10 +2,10 @@
  * Tests for Task 2.1: components/landing/hero.tsx migration
  * RED: fail until hero.tsx is rewritten
  */
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("framer-motion", () => ({
   motion: {

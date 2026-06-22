@@ -45,7 +45,11 @@ export function Features() {
           Features
         </p>
         <h2
-          style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 3rem)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+          }}
           className="font-light text-white mb-16"
         >
           Everything a discipline layer needs.
@@ -57,13 +61,9 @@ export function Features() {
               key={feature.title}
               className="bg-signalgray-800 p-10 hover:bg-signalgray-900 transition-colors duration-200"
             >
-              <div className="text-2xl text-white/50 mb-4 font-mono">
-                {feature.icon}
-              </div>
+              <div className="text-2xl text-white/50 mb-4 font-mono">{feature.icon}</div>
               <h3 className="font-medium text-white mb-3">{feature.title}</h3>
-              <p className="text-white/60 text-[1.0625rem] leading-[1.65]">
-                {feature.description}
-              </p>
+              <p className="text-white/60 text-[1.0625rem] leading-[1.65]">{feature.description}</p>
             </div>
           ))}
         </div>

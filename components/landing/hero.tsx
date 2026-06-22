@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Hero() {
@@ -9,8 +9,7 @@ export function Hero() {
 
   useEffect(() => {
     const isInternalNav =
-      Boolean(document.referrer) &&
-      new URL(document.referrer).origin === window.location.origin;
+      Boolean(document.referrer) && new URL(document.referrer).origin === window.location.origin;
     if (!isInternalNav) setShouldAnimate(true);
   }, []);
 
@@ -24,11 +23,7 @@ export function Hero() {
 
         {/* Headline */}
         <motion.h1
-          initial={
-            shouldAnimate
-              ? { clipPath: "inset(100% 0 0 0)", y: "80%" }
-              : false
-          }
+          initial={shouldAnimate ? { clipPath: "inset(100% 0 0 0)", y: "80%" } : false}
           animate={{ clipPath: "inset(0% 0 0 0)", y: "0%" }}
           transition={{ duration: 1.25, ease: EASE_ENTER_TUPLE }}
           style={{
@@ -56,10 +51,7 @@ export function Hero() {
           >
             npm install -g superspecs
           </Link>
-          <Link
-            href="/docs"
-            className="link-underline font-medium text-white/70 text-sm py-3"
-          >
+          <Link href="/docs" className="link-underline font-medium text-white/70 text-sm py-3">
             Read the docs →
           </Link>
         </div>
@@ -72,9 +64,7 @@ export function Hero() {
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-              <span className="ml-2 text-[0.75rem] text-white/40 font-mono">
-                terminal
-              </span>
+              <span className="ml-2 text-[0.75rem] text-white/40 font-mono">terminal</span>
             </div>
             {/* Content */}
             <div className="p-6 font-mono text-sm leading-[1.7] text-left space-y-2">

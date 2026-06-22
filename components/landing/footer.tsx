@@ -18,22 +18,29 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="text-xs font-mono text-white/40 uppercase tracking-wider mb-4">
-              Product
-            </p>
+            <p className="text-xs font-mono text-white/40 uppercase tracking-wider mb-4">Product</p>
             <ul className="space-y-2 text-sm text-white/50">
               <li>
-                <Link href="/docs" className="link-underline hover:text-white/80 transition-colors duration-200">
+                <Link
+                  href="/docs"
+                  className="link-underline hover:text-white/80 transition-colors duration-200"
+                >
                   Documentation
                 </Link>
               </li>
               <li>
-                <Link href="/#how-it-works" className="link-underline hover:text-white/80 transition-colors duration-200">
+                <Link
+                  href="/#how-it-works"
+                  className="link-underline hover:text-white/80 transition-colors duration-200"
+                >
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/#features" className="link-underline hover:text-white/80 transition-colors duration-200">
+                <Link
+                  href="/#features"
+                  className="link-underline hover:text-white/80 transition-colors duration-200"
+                >
                   Features
                 </Link>
               </li>
@@ -70,9 +77,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/30 text-xs font-mono">
-            © 2026 SuperSpecs. MIT License.
-          </p>
+          <p className="text-white/30 text-xs font-mono">© 2026 SuperSpecs. MIT License.</p>
           <div className="flex items-center gap-1 text-xs text-white/30 font-mono">
             <span>Works with</span>
             <span className="text-white/40 mx-1">Claude Code · Cursor · OpenCode · Copilot</span>

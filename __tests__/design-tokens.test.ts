@@ -5,9 +5,9 @@
  * RED: these will fail until globals.css is updated
  */
 
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 
 const globalsPath = resolve(process.cwd(), "app/globals.css");
 const css = readFileSync(globalsPath, "utf-8");

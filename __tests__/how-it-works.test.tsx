@@ -2,9 +2,10 @@
  * Tests for Task 2.4: components/landing/how-it-works.tsx migration
  * RED: fail until how-it-works.tsx is rewritten
  */
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 
 const srcPath = resolve(process.cwd(), "components/landing/how-it-works.tsx");
 

@@ -3,7 +3,7 @@
  * RED: these will fail until lib/easing.ts is created
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("lib/easing — motion constants", () => {
   it("EASE_ENTER equals cubic-bezier(0.6, 0, 0.24, 1)", async () => {
@@ -36,7 +36,7 @@ describe("lib/easing — motion constants", () => {
     // Extract the four numbers from the cubic-bezier string
     const match = EASE_ENTER.match(/cubic-bezier\(([^)]+)\)/);
     expect(match).not.toBeNull();
-    const coords = match![1].split(",").map((s) => parseFloat(s.trim()));
+    const coords = match?.[1].split(",").map((s) => parseFloat(s.trim()));
     expect(coords).toEqual([...EASE_ENTER_TUPLE]);
   });
 
@@ -44,7 +44,7 @@ describe("lib/easing — motion constants", () => {
     const { EASE_EXIT, EASE_EXIT_TUPLE } = await import("@/lib/easing");
     const match = EASE_EXIT.match(/cubic-bezier\(([^)]+)\)/);
     expect(match).not.toBeNull();
-    const coords = match![1].split(",").map((s) => parseFloat(s.trim()));
+    const coords = match?.[1].split(",").map((s) => parseFloat(s.trim()));
     expect(coords).toEqual([...EASE_EXIT_TUPLE]);
   });
 });

@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { MDXContent } from "@/components/mdx-content";
 
 // Velite generates this — we use a light static approach for now
@@ -28,11 +28,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function DocPage({
-  params,
-}: {
-  params: Promise<{ slug?: string[] }>;
-}) {
+export default async function DocPage({ params }: { params: Promise<{ slug?: string[] }> }) {
   const { slug } = await params;
   const doc = await getDoc(slug);
 
@@ -41,7 +37,8 @@ export default async function DocPage({
   }
 
   return (
-    <article className="prose prose-invert prose-sm md:prose-base max-w-none
+    <article
+      className="prose prose-invert prose-sm md:prose-base max-w-none
       prose-headings:font-medium prose-headings:tracking-tight
       prose-h1:text-3xl prose-h1:mb-8
       prose-h2:text-xl prose-h2:mt-12 prose-h2:mb-4
@@ -54,7 +51,8 @@ export default async function DocPage({
       prose-table:border-collapse
       prose-th:text-white/80 prose-th:border-b prose-th:border-white/15 prose-th:pb-2 prose-th:text-left prose-th:text-xs prose-th:uppercase prose-th:tracking-wider
       prose-td:text-white/60 prose-td:border-b prose-td:border-white/10 prose-td:py-2 prose-td:text-sm
-    ">
+    "
+    >
       <MDXContent code={doc.body} />
     </article>
   );

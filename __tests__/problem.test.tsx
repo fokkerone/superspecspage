@@ -2,9 +2,10 @@
  * Tests for Task 2.8: components/landing/problem.tsx migration
  * RED: fail until problem.tsx is rewritten
  */
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
 
 const srcPath = resolve(process.cwd(), "components/landing/problem.tsx");
 
