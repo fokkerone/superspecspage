@@ -1,6 +1,5 @@
 /**
  * Tests for Task 2.1 + 2.2: section parallax on all landing sections
- * RED: fail until useScroll/useTransform parallax is added to each section
  */
 
 import { readFileSync } from "node:fs";
@@ -22,8 +21,9 @@ for (const file of darkSections) {
   describe(`Task 2.1 — ${name}: section parallax`, () => {
     const src = readFileSync(resolve(cwd, file), "utf-8");
 
-    it("uses useScroll", () => {
+    it("uses useScroll with container", () => {
       expect(src).toContain("useScroll");
+      expect(src).toContain("useScrollContainer");
     });
 
     it("uses useTransform for section Y", () => {
@@ -34,20 +34,14 @@ for (const file of darkSections) {
       expect(src).toContain("useReducedMotion");
     });
 
-    it("has parallax range (60px for dark sections)", () => {
-      expect(src).toContain("60");
-      expect(src).toContain("-60");
+    it("has vh parallax range with negative start (overlap effect)", () => {
+      expect(src).toContain("-20vh");
+      expect(src).toContain("5vh");
     });
 
     it("does NOT use sticky positioning", () => {
       expect(src).not.toContain("sticky");
       expect(src).not.toMatch(/position:\s*["']?fixed/);
-    });
-
-    it("does NOT use scrollContainer (section parallax uses viewport directly)", () => {
-      // Section parallax uses useScroll without container so framer-motion
-      // tracks against the viewport — prevents null-ref freeze on SSR
-      expect(src).not.toContain("useScrollContainer");
     });
   });
 }
@@ -55,8 +49,9 @@ for (const file of darkSections) {
 describe("Task 2.2 — features: section parallax", () => {
   const src = readFileSync(resolve(cwd, "components/landing/features.tsx"), "utf-8");
 
-  it("uses useScroll for section", () => {
+  it("uses useScroll with container", () => {
     expect(src).toContain("useScroll");
+    expect(src).toContain("useScrollContainer");
   });
 
   it("uses useTransform for section Y", () => {
@@ -67,9 +62,9 @@ describe("Task 2.2 — features: section parallax", () => {
     expect(src).toContain("useReducedMotion");
   });
 
-  it("has parallax range values (40px for light sections)", () => {
-    expect(src).toContain("40");
-    expect(src).toContain("-40");
+  it("has vh parallax range (light section)", () => {
+    expect(src).toContain("-15vh");
+    expect(src).toContain("5vh");
   });
 
   it("does NOT use sticky positioning", () => {
@@ -80,12 +75,12 @@ describe("Task 2.2 — features: section parallax", () => {
 describe("Task 2.2 — hero: section-level parallax wrapper", () => {
   const src = readFileSync(resolve(cwd, "components/landing/hero.tsx"), "utf-8");
 
-  it("has section-level parallax Y (sectionY or similar)", () => {
+  it("has section-level parallax Y", () => {
     expect(src).toMatch(/sectionY|sectionParallax|wrapperY/);
   });
 
-  it("section Y uses 40px range (light section)", () => {
-    expect(src).toContain("40");
-    expect(src).toContain("-40");
+  it("section Y uses vh range (light section)", () => {
+    expect(src).toContain("-15vh");
+    expect(src).toContain("5vh");
   });
 });

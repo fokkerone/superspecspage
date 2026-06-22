@@ -1,21 +1,24 @@
 "use client";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Terminal() {
   const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainer = useScrollContainer();
   const prefersReduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
+    container: scrollContainer,
     offset: ["start end", "end start"],
   });
 
   const sectionY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ([0, 0] as number[]) : ([60, -60] as number[]),
+    prefersReduced ? ["0vh", "0vh"] : ["-20vh", "5vh"],
   );
 
   return (
@@ -32,14 +35,12 @@ export function Terminal() {
           transition={{ duration: 0.7, ease: EASE_ENTER_TUPLE }}
         >
           <div className="rounded-lg border border-white/10 bg-signalgray-900 overflow-hidden">
-            {/* Title bar */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <span className="ml-2 text-[0.75rem] text-white/40 font-mono">terminal</span>
             </div>
-            {/* Content */}
             <div className="p-6 font-mono text-sm leading-[1.7] text-left space-y-2">
               <div className="flex gap-3">
                 <span className="text-white/70">$</span>
