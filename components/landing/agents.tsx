@@ -1,5 +1,7 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Agents() {
@@ -14,8 +16,28 @@ export function Agents() {
     "Windsurf",
   ];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainer = useScrollContainer();
+  const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    container: scrollContainer,
+    offset: ["start end", "end start"],
+  });
+
+  const sectionY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["3%", "-3%"],
+  );
+
   return (
-    <section className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
+    <motion.section
+      ref={sectionRef}
+      style={{ y: sectionY, willChange: "transform" }}
+      className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10"
+    >
       <div className="max-w-5xl mx-auto text-center">
         <motion.p
           initial={{ opacity: 0, y: 40 }}
@@ -46,6 +68,6 @@ export function Agents() {
           One install. Skills symlinked automatically.
         </p>
       </div>
-    </section>
+    </motion.section>
   );
 }

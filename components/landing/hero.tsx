@@ -37,9 +37,23 @@ export function Hero() {
     prefersReduced ? ["0%", "0%"] : ["0%", "-8%"],
   );
 
+  // Section-level parallax (separate from headline — full viewport pass-through)
+  const { scrollYProgress: sectionScrollProgress } = useScroll({
+    target: sectionRef,
+    container: scrollContainer,
+    offset: ["start end", "end start"],
+  });
+
+  const sectionY = useTransform(
+    sectionScrollProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["2%", "-2%"],
+  );
+
   return (
-    <section
+    <motion.section
       ref={sectionRef}
+      style={{ y: sectionY, willChange: "transform" }}
       className="bg-signalgray-100 min-h-screen flex flex-col justify-between overflow-hidden"
     >
       {/* Eyebrow — oben, unter dem fixen Header */}
@@ -110,6 +124,6 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

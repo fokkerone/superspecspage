@@ -75,92 +75,80 @@ The system SHALL preserve all existing headline transforms from `scroll-motion-s
 
 ---
 
-### Requirement: Hero Section is Sticky
+### Requirement: Section Parallax Scroll
 
-The system SHALL make the Hero section `position: sticky` at `top: 0`.
+The system SHALL apply a subtle vertical parallax transform to selected landing page sections as they scroll through the viewport. Each section moves at a slightly different speed than native scroll, creating a layered gliding effect between sections.
 
-#### Scenario: Hero sticks while Terminal scrolls over it
-- GIVEN the user begins scrolling past the Hero
-- WHEN the Hero would normally scroll off-screen
-- THEN the Hero remains pinned at the top of the scroll container viewport
-- AND the Terminal section scrolls upward over the Hero from below
+#### Scenario: Dark sections translate upward faster than native scroll
+- GIVEN a dark section (Terminal, Problem, HowItWorks, Agents, Install) is entering the viewport from below
+- WHEN the user scrolls downward
+- THEN the section translates with a subtle Y offset (`"3%" → "-3%"`) proportional to its `scrollYProgress`
+- AND the section moves at a slightly different rate than the section above it
 
-#### Scenario: Terminal section renders above Hero in stacking order
-- GIVEN the Hero is sticky at z-index 0
-- WHEN the Terminal section scrolls over the Hero
-- THEN the Terminal section is fully visible above the Hero content
-- AND no Hero content bleeds through the Terminal
-
-#### Scenario: Header remains above sticky Hero
-- GIVEN the Hero section is sticky
-- WHEN the Terminal scrolls over the Hero
-- THEN the fixed Header (z-50) remains visible above both sections at all times
-
----
-
-### Requirement: Features Section is Sticky
-
-The system SHALL make the Features section `position: sticky` at `top: 0`.
-
-#### Scenario: Features sticks while Agents scrolls over it
-- GIVEN the user scrolls past the Features section
-- WHEN the Features section would normally scroll off-screen
-- THEN the Features section remains pinned at the top of the scroll container viewport
-- AND the Agents section scrolls upward over the Features from below
-
-#### Scenario: Agents section renders above Features in stacking order
-- GIVEN the Features section is sticky at z-index 0
-- WHEN the Agents section scrolls over it
-- THEN the Agents section is fully visible above the Features content
-
----
-
-### Requirement: Non-Sticky Sections Unaffected
-
-The system SHALL leave Terminal, Problem, HowItWorks, Agents, Install, and Footer with their existing positioning and z-index behavior.
-
-#### Scenario: Non-sticky dark sections scroll normally
-- GIVEN Terminal, Problem, HowItWorks, Agents, Install sections
+#### Scenario: Light sections translate at a different rate
+- GIVEN a light section (Hero, Features) is in or entering the viewport
 - WHEN the user scrolls
-- THEN these sections scroll with normal document flow
-- AND their `whileInView` reveal animations remain functional
+- THEN the light section's content has a parallax offset that differs from the adjacent dark sections
+- AND the visual boundary between sections appears to glide rather than cut
+
+#### Scenario: Parallax respects prefers-reduced-motion
+- GIVEN `prefers-reduced-motion: reduce` is set
+- WHEN the user scrolls
+- THEN all section parallax transforms are locked at `"0%"` — no motion applied
+
+#### Scenario: No layout shifts or gaps between sections
+- GIVEN sections have parallax Y transforms applied
+- WHEN transforms are at their maximum values
+- THEN no visible gap or overlap of background colors appears between sections
+- AND the page layout remains visually continuous
+
+---
+
+### Requirement: Existing Sections Unaffected by Parallax Approach
+
+The system SHALL NOT use `position: sticky`, `position: fixed`, or `position: absolute` for the layered section effect. All sections remain in normal document flow.
+
+#### Scenario: Sections scroll off-screen normally
+- GIVEN any section on the page
+- WHEN the user scrolls past it
+- THEN the section scrolls out of view following normal document flow
+- AND no section pins or freezes at the viewport top
 
 ---
 
 ## Error Behavior
 
 - The system SHALL NOT introduce horizontal scrollbars at any scroll position
-- The system SHALL NOT make the Header (z-50) invisible behind any sticky or non-sticky section
+- The system SHALL NOT make the Header (z-50) invisible at any scroll position
 - The system SHALL NOT break `PageTransition` — the snapshot-clone behavior must function identically
-- The system SHALL NOT apply sticky to any section other than Hero and Features
-- The system SHALL NOT use `overflow: hidden` on any ancestor of the sticky sections that would break sticky positioning
+- The system SHALL NOT use `position: sticky` or `position: fixed` for the layered effect
+- The system SHALL NOT remove any section from normal document flow
 
 ---
 
 ## Non-Functional Requirements
 
-- **Performance:** All three headline transforms (`y`, `scale`, `x`) SHALL use `will-change: transform` on the animated element
-- **Accessibility:** All motion transforms SHALL be disabled when `prefers-reduced-motion: reduce` is active
+- **Performance:** All section parallax transforms SHALL use `will-change: transform` on animated elements
+- **Accessibility:** All section parallax transforms SHALL be disabled (`"0%"` → `"0%"`) when `prefers-reduced-motion: reduce` is active
 - **Build:** `tsc --noEmit`, `biome check`, and `next build` SHALL pass with zero errors
-- **Regressions:** All 264 pre-existing tests SHALL continue to pass
-- **Visual verification:** Automated tests verify source-code correctness (correct transform values, correct CSS classes). Visual behavior (actual scale growth, section overlap) SHALL be manually verified in a real browser before ship. Automated tests do not replace browser verification for motion effects.
+- **Regressions:** All 275 pre-existing tests SHALL continue to pass
+- **Visual verification:** Automated tests verify source-code correctness. The parallax gliding effect SHALL be manually verified in a real browser before ship.
 
 ---
 
 ## Out of Scope
 
-- Sticky on any section other than Hero and Features
-- Horizontal scroll distance beyond 8% (no marquee/ticker effect)
+- `position: sticky` or fixed positioning for any section
+- Horizontal parallax beyond the headline (already in Wave 1)
 - New page sections or content changes
 - Mobile-specific alternative layouts
 - Docs section (`/docs/*`)
-- `transform-origin` tuning — deferred to post-first-render visual review
-- iOS sticky flicker fix — deferred
+- Per-section different parallax factors per section type (all sections use same ±3% range)
 
 ---
 
 ## Glossary
 
-- **sticky section:** A section with `position: sticky; top: 0` that pins to the top of the scroll container while subsequent sections scroll over it
-- **scrollYProgress:** A framer-motion value from `useScroll` ranging `0→1` as the target section scrolls from entering to leaving the viewport
-- **z-index schema:** sticky sections at z-index 0 (implicit), non-sticky dark sections at z-index 10, Header at z-50
+- **section parallax:** A scroll-bound `translateY` transform applied to a section as it passes through the viewport, giving a subtle speed differential between adjacent sections
+- **scrollYProgress:** A framer-motion value from `useScroll` ranging `0→1` as the target section scrolls from entering to leaving the viewport (`offset: ["start end", "end start"]`)
+- **layered gliding:** The visual effect where sections appear to glide smoothly past each other due to differing scroll speeds

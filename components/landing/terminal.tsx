@@ -1,10 +1,32 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function Terminal() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainer = useScrollContainer();
+  const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    container: scrollContainer,
+    offset: ["start end", "end start"],
+  });
+
+  const sectionY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["3%", "-3%"],
+  );
+
   return (
-    <section className="bg-signalgray-800 py-24 md:py-32 px-6 md:px-8">
+    <motion.section
+      ref={sectionRef}
+      style={{ y: sectionY, willChange: "transform" }}
+      className="bg-signalgray-800 py-24 md:py-32 px-6 md:px-8"
+    >
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -40,6 +62,6 @@ export function Terminal() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
