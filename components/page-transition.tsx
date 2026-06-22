@@ -29,6 +29,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 
   // Capture on mousedown/touchstart — fires BEFORE Next.js routing starts,
   // so scroll is still at the user's position. This is the reliable moment.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: captureSnapshot is stable (refs only)
   useEffect(() => {
     document.addEventListener("mousedown", captureSnapshot, { capture: true });
     document.addEventListener("touchstart", captureSnapshot, {
