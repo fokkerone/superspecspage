@@ -57,9 +57,9 @@ describe("Task 2.2 — Header: no old aesthetic tokens", () => {
 });
 
 describe("Task 2.2 — Header: correct new tokens", () => {
-  it("uses bg-signalgray-800/80", () => {
+  it("uses mix-blend-difference (replaces bg-signalgray-800/80)", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("signalgray-800");
+    expect(src).toContain("mix-blend-difference");
   });
 
   it("uses h-14 for header height", () => {
@@ -72,9 +72,9 @@ describe("Task 2.2 — Header: correct new tokens", () => {
     expect(src).toContain("link-underline");
   });
 
-  it("uses border-white/10 for bottom border", () => {
+  it("no border-b (mix-blend-difference replaces bordered header)", () => {
     const src = readFileSync(srcPath, "utf-8");
-    expect(src).toContain("border-white/10");
+    expect(src).not.toContain("border-b");
   });
 
   it("logo uses opacity: 0.4 on SPECS span", () => {
