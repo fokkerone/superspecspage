@@ -20,31 +20,35 @@ None.
 ---
 
 ## Review 2 (Wave 2)
-Date: —
-Reviewer: —
-Status: pending
+Date: 2026-06-22
+Reviewer: subagent
+Status: ✅ passed — no Critical findings
 
 ### Critical findings
-_none yet_
+None.
 
 ### Major findings
-_none yet_
+None.
 
 ### Minor findings
-_none yet_
+None. Zero forbidden patterns (emerald, bg-[#080808], font-bold, font-semibold, rounded-full outside terminal dots, ease-in-out, --ease-premium) across all 11 migrated files. All file-read scans clean.
 
 ---
 
 ## Review 3 (Wave 3 / pre-ship)
-Date: —
-Reviewer: —
-Status: pending
+Date: 2026-06-22
+Reviewer: subagent
+Status: ✅ passed — no Critical findings
 
 ### Critical findings
-_none yet_
+None.
 
 ### Major findings
-_none yet_
+None.
+
+### Medium findings (resolved during wave)
+1. **biome.json schema mismatch (pre-existing, resolved):** Updated from schema 2.0.0 to 2.5.0. Migrated deprecated keys. Auto-applied `node:` protocol fix to all test file imports. biome check now exits 0 errors.
+2. **page-transition.tsx useEffect deps (biome auto-fix regression):** Biome auto-fix incorrectly added `captureSnapshot` to the deps array during `biome check --write`. Reverted to empty `[]` with a `biome-ignore` suppression comment. This is the correct signalgrau pattern — `captureSnapshot` is a stable closure over refs only.
 
 ### Minor findings
-_none yet_
+None.
