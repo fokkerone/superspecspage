@@ -1,7 +1,6 @@
 "use client";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
 
 export function HowItWorks() {
@@ -44,12 +43,10 @@ export function HowItWorks() {
   ];
 
   const sectionRef = useRef<HTMLElement>(null);
-  const scrollContainer = useScrollContainer();
   const prefersReduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    container: scrollContainer,
     offset: ["start end", "end start"],
   });
 

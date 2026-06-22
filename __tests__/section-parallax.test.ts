@@ -44,8 +44,10 @@ for (const file of darkSections) {
       expect(src).not.toMatch(/position:\s*["']?fixed/);
     });
 
-    it("uses useScrollContainer for container ref", () => {
-      expect(src).toContain("useScrollContainer");
+    it("does NOT use scrollContainer (section parallax uses viewport directly)", () => {
+      // Section parallax uses useScroll without container so framer-motion
+      // tracks against the viewport — prevents null-ref freeze on SSR
+      expect(src).not.toContain("useScrollContainer");
     });
   });
 }

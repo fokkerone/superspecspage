@@ -40,7 +40,6 @@ export function Hero() {
   // Section-level parallax (separate from headline — full viewport pass-through)
   const { scrollYProgress: sectionScrollProgress } = useScroll({
     target: sectionRef,
-    container: scrollContainer,
     offset: ["start end", "end start"],
   });
 
