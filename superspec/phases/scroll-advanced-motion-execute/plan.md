@@ -12,8 +12,8 @@
 Branch name: `superspec/scroll-advanced-motion`
 Type: branch
 Worktree path: N/A
-Created from: TBD
-Created: TBD
+Created from: superspec/scroll-motion-style @ 9c4a224
+Created: 2026-06-22
 
 ---
 

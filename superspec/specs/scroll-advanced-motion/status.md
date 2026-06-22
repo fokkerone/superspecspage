@@ -1,7 +1,7 @@
 # Advanced Scroll Motion — Headline Scale+Translate & Layered Sections — Status
 
 ## Phase
-2.1 — Execute › Pick Spec ✅
+2.2 — Execute › Branch ✅
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -11,7 +11,7 @@
 - [x] Wiki conflicts: resolved (overflow-x: clip, Wave 0)
 - [x] Techstack conflicts: none
 - [x] Phase directory created
-- [ ] Branch created
+- [x] Branch created (superspec/scroll-advanced-motion)
 - [ ] Subagent execution complete
 - [ ] All tests passing
 - [ ] Code review passed (no Critical findings)
