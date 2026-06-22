@@ -43,7 +43,7 @@ export function Features() {
   ];
 
   return (
-    <section id="features" className="bg-signalgray-100 py-24 md:py-40 px-5 md:px-10">
+    <section id="features" className="sticky top-0 bg-signalgray-100 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-5xl mx-auto">
         <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-signalgray-800/50 mb-4">
           Features
