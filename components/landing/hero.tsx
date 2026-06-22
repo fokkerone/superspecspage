@@ -40,7 +40,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="sticky top-0 bg-signalgray-100 min-h-screen flex flex-col justify-between overflow-hidden"
+      className="bg-signalgray-100 min-h-screen flex flex-col justify-between overflow-hidden"
     >
       {/* Eyebrow — oben, unter dem fixen Header */}
       <div className="px-6 md:px-8 pt-20 md:pt-24">

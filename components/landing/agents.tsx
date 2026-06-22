@@ -15,7 +15,7 @@ export function Agents() {
   ];
 
   return (
-    <section className="relative z-10 bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
+    <section className="bg-signalgray-800 py-24 md:py-40 px-5 md:px-10">
       <div className="max-w-5xl mx-auto text-center">
         <motion.p
           initial={{ opacity: 0, y: 40 }}
