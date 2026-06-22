@@ -11,6 +11,20 @@
       "ingested_at": "2026-06-22T10:15:00Z",
       "pages_created": ["ui/Home", "ui/page-transitions"],
       "pages_updated": ["Home"]
+    },
+    {
+      "slug": "ui-style",
+      "ingested_at": "2026-06-22T21:00:00Z",
+      "pages_created": [
+        "ui/design-system",
+        "ui/easing",
+        "ui/component-patterns"
+      ],
+      "pages_updated": [
+        "ui/page-transitions",
+        "ui/Home",
+        "Home"
+      ]
     }
   ]
 }
