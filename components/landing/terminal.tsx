@@ -12,13 +12,13 @@ export function Terminal() {
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     container: scrollContainer,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
   const sectionY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0vh", "0vh"] : ["-20vh", "5vh"],
+    prefersReduced ? ["0vh", "0vh"] : ["0vh", "-10vh"],
   );
 
   return (

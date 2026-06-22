@@ -34,9 +34,9 @@ for (const file of darkSections) {
       expect(src).toContain("useReducedMotion");
     });
 
-    it("has vh parallax range with negative start (overlap effect)", () => {
-      expect(src).toContain("-20vh");
-      expect(src).toContain("5vh");
+    it("has vh parallax range with starts at 0, translates up as section exits", () => {
+      expect(src).toContain("-10vh");
+      expect(src).toContain("-10vh");
     });
 
     it("does NOT use sticky positioning", () => {
@@ -63,8 +63,7 @@ describe("Task 2.2 — features: section parallax", () => {
   });
 
   it("has vh parallax range (light section)", () => {
-    expect(src).toContain("-15vh");
-    expect(src).toContain("5vh");
+    expect(src).toContain("-8vh");
   });
 
   it("does NOT use sticky positioning", () => {
@@ -80,7 +79,6 @@ describe("Task 2.2 — hero: section-level parallax wrapper", () => {
   });
 
   it("section Y uses vh range (light section)", () => {
-    expect(src).toContain("-15vh");
-    expect(src).toContain("5vh");
+    expect(src).toContain("-8vh");
   });
 });

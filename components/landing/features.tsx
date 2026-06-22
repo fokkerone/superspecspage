@@ -51,13 +51,13 @@ export function Features() {
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     container: scrollContainer,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
   const sectionY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0vh", "0vh"] : ["-15vh", "5vh"],
+    prefersReduced ? ["0vh", "0vh"] : ["0vh", "-8vh"],
   );
 
   return (

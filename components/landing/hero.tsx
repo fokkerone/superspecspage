@@ -40,13 +40,13 @@ export function Hero() {
   // Section-level parallax (separate from headline — full viewport pass-through)
   const { scrollYProgress: sectionScrollProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
 
   const sectionY = useTransform(
     sectionScrollProgress,
     [0, 1],
-    prefersReduced ? ["0vh", "0vh"] : ["-15vh", "5vh"],
+    prefersReduced ? ["0vh", "0vh"] : ["0vh", "-8vh"],
   );
 
   return (
