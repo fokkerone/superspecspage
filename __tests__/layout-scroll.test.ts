@@ -40,8 +40,11 @@ describe("Task 1.2 — layout.tsx: ScrollContainer outside ThemeProvider+PageTra
 
 describe("Task 1.2 — globals.css: body overflow hidden + signalgray-100 background", () => {
   it("body has overflow hidden", () => {
-    // Should contain overflow: hidden on body or html
-    expect(cssSrc).toMatch(/body\s*\{[^}]*overflow:\s*hidden/s);
+    // Check that overflow: hidden appears after a body { rule
+    const bodyIdx = cssSrc.indexOf("body {");
+    expect(bodyIdx).toBeGreaterThan(-1);
+    const bodyBlock = cssSrc.slice(bodyIdx, cssSrc.indexOf("}", bodyIdx) + 1);
+    expect(bodyBlock).toContain("overflow: hidden");
   });
 
   it("body or html has background-color signalgray-100", () => {
