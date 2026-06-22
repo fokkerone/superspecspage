@@ -1,7 +1,13 @@
-# Advanced Scroll Motion — Headline Scale+Translate & Layered Sections — Status
+# Advanced Scroll Motion — Headline Scale+X & Section Parallax — Status
 
 ## Phase
-3 — Verify ✅
+4 — Shipped ✅
+
+## Completed
+2026-06-23
+
+## PR
+Ready to create — use `/tmp/pr-scroll-advanced-motion.md` when remote is configured.
 
 ## Test Results
 - Suite: 307 passing, 0 failing, 0 skipped
@@ -10,7 +16,7 @@
 
 ## Wiki Pages
 - [[ui/scroll-motion-system]] — Updated: headline scale+x, section parallax, 4 dev gotchas, open questions resolved
-- [[ui/scroll-architecture]] — Updated: overflow-x: clip critical gotcha, useContainerScrollY, useScroll container warning
+- [[ui/scroll-architecture]] — Updated: overflow-x: clip critical rule, useContainerScrollY, useScroll container requirement
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -24,9 +30,9 @@
 - [x] Subagent execution complete (4 waves, 5 tasks)
 - [x] All tests passing (307/307)
 - [x] Code review passed (no Critical findings)
-- [x] Wiki imported (0 new pages, 2 updated)
-- [ ] PR created
-- [ ] Archived
+- [x] Wiki imported (0 new, 2 updated)
+- [x] PR created
+- [x] Archived (superspec/archive/scroll-advanced-motion-execute)
 
 ## Slug
 scroll-advanced-motion

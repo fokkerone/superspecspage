@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **Advanced Scroll Motion** (`scroll-advanced-motion` spec):
+  - Headline `scale(1.0→1.15)` + `x(0%→-8%)` scroll transforms — 3 simultaneous transforms on mega-headline (Y, Scale, X)
+  - Section-level parallax on all 7 landing sections: `y: 0vh → -10vh` (dark), `0vh → -8vh` (light) — sections float slightly faster than native scroll
+  - `useContainerScrollY()` helper exported from `scroll-container.tsx` — raw scrollTop MotionValue for custom scroll consumers
+  - `overflow-x: clip` on ScrollContainer (replaces `hidden`) — fixes `position: sticky` in Safari
+  - 43 new tests — 307 total, 16/16 spec scenarios covered
+
 - **Scroll Motion & Light/Dark Sections** (`scroll-motion-style` spec):
   - Custom scroll container (`components/scroll-container.tsx`) — `body: overflow hidden`, `ScrollContext` for framer-motion parallax
   - Hero mega-headline: `font-extrabold`, `clamp(5rem, 15vw, 18rem)`, `whitespace-nowrap`, Parallax −25% on scroll via `useScroll + useTransform`
