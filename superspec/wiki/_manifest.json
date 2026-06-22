@@ -41,5 +41,15 @@
         "log"
       ]
     }
+    {
+      "slug": "scroll-advanced-motion",
+      "ingested_at": "2026-06-23T01:45:00Z",
+      "pages_created": [],
+      "pages_updated": [
+        "ui/scroll-motion-system",
+        "ui/scroll-architecture",
+        "log"
+      ]
+    }
   ]
 }

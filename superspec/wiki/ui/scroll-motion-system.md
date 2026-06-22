@@ -1,18 +1,18 @@
 ---
 title: Scroll Motion System — Parallax, Light/Dark Sections, Viewport Reveals
-summary: The landing page scroll motion system. Mega-headline parallax on the Hero, alternating light/dark section backgrounds (signalgray-100 / signalgray-800), and whileInView reveal animations on all sections. Inspired by signalgrau.vercel.app and betteroff.studio.
-tags: [ui, animation, parallax, scroll, sections, light-dark, scroll-motion-style]
+summary: The landing page scroll motion system. Mega-headline parallax (y, scale, x) on the Hero, alternating light/dark section backgrounds, whileInView reveals, and section-level parallax on all landing sections. Inspired by signalgrau.vercel.app and betteroff.studio.
+tags: [ui, animation, parallax, scroll, sections, light-dark, scroll-motion-style, scroll-advanced-motion]
 spec: "[[../specs/scroll-motion-style/spec.md]]"
 created: 2026-06-22
 updated: 2026-06-22
 provenance:
   sources:
     - specs/scroll-motion-style/spec.md
-    - specs/scroll-motion-style/DISCUSS.md
-    - specs/scroll-motion-style/GRILL.md
+    - specs/scroll-advanced-motion/spec.md
+    - specs/scroll-advanced-motion/DISCUSS.md
     - components/landing/hero.tsx
-    - components/landing/features.tsx
     - components/landing/terminal.tsx
+    - components/landing/features.tsx
   extracted: ~80%
   inferred: ~15%
   ambiguous: ~5%
@@ -209,13 +209,73 @@ The terminal content itself is unchanged. See `components/landing/terminal.tsx`.
 
 - **`useReducedMotion()` fallback:** All parallax transforms use `prefersReduced ? ["0%", "0%"] : ["0%", "-25%"]`. Without this, the site fails WCAG 2.3.3 (no animation preference). Tests verify `useReducedMotion` is imported in hero.tsx.
 
-- **Overflow management:** Hero section has `overflow-hidden`. The scroll container has `overflow-x: hidden`. Both are needed — the hero clips the headline's right overflow; the container prevents a horizontal scrollbar if anything leaks.
+- **Overflow management:** Hero section has `overflow-hidden`. The scroll container has `overflow-x: clip` (changed from `hidden` in `scroll-advanced-motion` to not break `position: sticky`). The hero clips the headline's right overflow.
+
+## Headline Scale + Horizontal (scroll-advanced-motion)
+
+Added in `scroll-advanced-motion` spec. The mega-headline now has three simultaneous scroll-bound transforms:
+
+```tsx
+const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);      // existing
+const headlineScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);       // new
+const headlineX = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);       // new
+
+<motion.h1 style={{ y: headlineY, scale: headlineScale, x: headlineX }}>
+```
+
+- **Scale:** `1.0 → 1.15` — 15% growth as the user scrolls through the Hero. Text grows toward the viewer.
+- **X:** `0% → -8%` — text drifts left as it grows. Combined with scale: the "coming at you" effect.
+- Both are scroll-bound via the same `scrollYProgress` as `y` — single `useScroll` call, three transforms.
+- `useReducedMotion()` freezes all three at initial values.
+
+### Transform origin note
+
+Default `transform-origin: center center` — scale grows in all directions equally. `transform-origin: left center` (text grows rightward only) is deferred to visual fine-tuning. ^[inferred]
+
+## Section-Level Parallax (scroll-advanced-motion)
+
+All seven landing sections now have a subtle vertical parallax transform that makes them scroll slightly faster than native scroll speed, creating a layered gliding effect between sections.
+
+```tsx
+const { scrollYProgress } = useScroll({
+  target: sectionRef,
+  container: scrollContainer,          // ← must use container ref
+  offset: ["start start", "end start"],
+});
+
+const sectionY = useTransform(
+  scrollYProgress,
+  [0, 1],
+  prefersReduced ? ["0vh", "0vh"] : ["0vh", "-10vh"],  // dark sections
+  // prefersReduced ? ["0vh", "0vh"] : ["0vh", "-8vh"],  // light sections
+);
+```
+
+**Why `offset: ["start start", "end start"]`:** Starts tracking when the section top reaches the container top (section is fully in view), ends when section bottom reaches container top. Y goes `0 → -10vh` during this window — section scrolls slightly faster than native.
+
+**Why `container` is required:** `window.scrollY` is always `0` in the custom scroll architecture. Without `container: scrollContainer`, `scrollYProgress` never changes. This caused the "nothing visible" bug during development — the fix is to always pass the container ref.
+
+**Values:**
+- Dark sections (Terminal, Problem, HowItWorks, Agents, Install): `"0vh" → "-10vh"`
+- Light sections (Features): `"0vh" → "-8vh"`
+- Hero section: `"0vh" → "-8vh"` (separate from headline transforms)
+
+**Fine-tuning deferred:** `-10vh`/`-8vh` are the shipped values. Adjustment is expected after visual review.
+
+### Development gotchas discovered
+
+1. **`% values` on `motion.section y` are relative to element width, not height or viewport** — `"3%"` on a section is nearly invisible. Use `vh` for section-level parallax.
+2. **Without `container` ref, `scrollYProgress` freezes at 0** — every `useScroll` for section parallax must pass `container: scrollContainer`.
+3. **`overflow-x: hidden` on ScrollContainer broke `position: sticky`** — changed to `overflow-x: clip` (`scroll-advanced-motion` Task 0.1). `clip` clips without creating a scroll container.
+4. **`useContainerScrollY` approach (global scrollTop listener)** was explored but abandoned — `useScroll({ target, container })` is cleaner and consistent with the headline pattern.
 
 ## Open Questions
 
-- [ ] Horizontal overflow motion on the mega-headline (text sliding in from right on load) — deferred to a future spec. The `overflow-hidden` infrastructure is already in place.
-- [ ] Parallax on sections beyond the Hero — considered and deferred. The Terminal and Features sections are candidates. ^[inferred]
-- [ ] Mobile parallax performance — on low-end devices, `will-change: transform` on large elements may cause paint issues. Not yet tested on real hardware.
+- [x] ~~Horizontal overflow motion on the mega-headline~~ — resolved by `scroll-advanced-motion`: x(0%→-8%) + scale(1→1.15)
+- [x] ~~Parallax on sections beyond the Hero~~ — resolved: all 7 sections have section-level parallax
+- [ ] Fine-tuning parallax values (`-10vh`/`-8vh`) — deferred to visual review session
+- [ ] `transform-origin: left center` on mega-headline — deferred to visual fine-tuning
+- [ ] Mobile parallax performance — not yet tested on real hardware
 
 ## Related
 

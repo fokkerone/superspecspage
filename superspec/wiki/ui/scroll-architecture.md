@@ -1,7 +1,7 @@
 ---
 title: Scroll Architecture — Custom Container
 summary: The site uses a custom scroll container (not native window scroll) to enable precise parallax control, mix-blend-difference on the header, and clean Page Transition behavior. ScrollContainer sits outside PageTransition in the React tree.
-tags: [ui, scroll, architecture, parallax, scroll-motion-style]
+tags: [ui, scroll, architecture, parallax, scroll-motion-style, scroll-advanced-motion]
 spec: "[[../specs/scroll-motion-style/spec.md]]"
 created: 2026-06-22
 updated: 2026-06-22
@@ -145,11 +145,28 @@ const { scrollYProgress } = useScroll({
 
 - **`window.scrollY` is always 0:** This is expected. All scroll state lives in the container. Code that reads `window.scrollY` will always see `0` — use `scrollContainerRef.current.scrollTop` instead, or `useScroll({ container })`.
 
+- **`overflow-x: clip` not `overflow-x: hidden`:** Changed in `scroll-advanced-motion` (Task 0.1). `overflow: hidden` creates a new scroll container and blocks `position: sticky` in Safari. `overflow: clip` clips content identically without creating a scroll container — sticky works, no horizontal scrollbar. **Always use `clip`, never `hidden` on the ScrollContainer.**
+
+- **`useScroll` without `container` freezes at 0:** Any `useScroll` call for section-level parallax must pass `container: scrollContainer`. Without it, framer-motion tracks `window.scrollY` which is always `0` in this architecture — the scroll progress never updates and transforms appear frozen at their initial value.
+
 - **`position: sticky` on Docs sidebar:** Works correctly — `position: sticky` needs a scrolling ancestor, and `ScrollContainer` provides one. No special handling needed.
 
 - **`whileInView` viewport measurement:** framer-motion's `whileInView` uses `IntersectionObserver` with `root: null` (the browser viewport). Since `ScrollContainer` is `height: 100svh` and covers the full viewport, the observed area equals the visible area. No `root` prop needed on `viewport={{}}`.
 
 - **mix-blend-difference during Page Transition:** The fixed header has `mix-blend-difference`. During the ~1450ms page transition, `newRef` gets `position: relative + z-index + transform` — creating a stacking context that `mix-blend-difference` blends against. This causes a brief color artifact on the header during transition. Expected and accepted behavior — the animation dominates visually. ^[inferred]
+
+## useContainerScrollY (exported helper)
+
+`components/scroll-container.tsx` exports `useContainerScrollY()` — a hook that returns a `MotionValue<number>` tracking the container's `scrollTop` via an event listener.
+
+```tsx
+import { useContainerScrollY } from "@/components/scroll-container";
+
+const scrollY = useContainerScrollY(); // MotionValue<number> — actual scrollTop
+const y = useTransform(scrollY, (v) => v * -0.08); // 8% slower than native
+```
+
+This was explored for section parallax but not used in production — `useScroll({ target, container })` is the preferred pattern because it gives `scrollYProgress` (0→1) which is easier to map to output ranges. `useContainerScrollY` is available for cases where raw `scrollTop` is needed.
 
 ## Open Questions
 
