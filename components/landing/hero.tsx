@@ -29,6 +29,14 @@ export function Hero() {
     prefersReduced ? ["0%", "0%"] : ["0%", "-25%"],
   );
 
+  const headlineScale = useTransform(scrollYProgress, [0, 1], prefersReduced ? [1, 1] : [1, 1.15]);
+
+  const headlineX = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["0%", "-8%"],
+  );
+
   return (
     <section
       ref={sectionRef}
@@ -53,6 +61,8 @@ export function Hero() {
             <motion.h1
               style={{
                 y: headlineY,
+                scale: headlineScale,
+                x: headlineX,
                 fontSize: "clamp(5rem, 15vw, 18rem)",
                 letterSpacing: "-0.03em",
                 lineHeight: 0.95,
