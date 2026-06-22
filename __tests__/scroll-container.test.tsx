@@ -28,7 +28,7 @@ describe("ScrollContainer", () => {
     expect(scrollDiv.style.overflowY).toBe("auto");
   });
 
-  it("scroll container div has overflow-x hidden", async () => {
+  it("scroll container div has overflow-x clip (not hidden — clip doesn't break position:sticky)", async () => {
     const { ScrollContainer } = await import("@/components/scroll-container");
     const { container } = render(
       <ScrollContainer>
@@ -36,7 +36,7 @@ describe("ScrollContainer", () => {
       </ScrollContainer>,
     );
     const scrollDiv = container.firstElementChild as HTMLElement;
-    expect(scrollDiv.style.overflowX).toBe("hidden");
+    expect(scrollDiv.style.overflowX).toBe("clip");
   });
 
   it("scroll container div has height 100svh", async () => {

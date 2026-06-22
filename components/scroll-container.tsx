@@ -18,7 +18,7 @@ export function ScrollContainer({ children }: { children: React.ReactNode }) {
         className="scroll-container"
         style={{
           overflowY: "auto",
-          overflowX: "hidden",
+          overflowX: "clip",
           height: "100svh",
           overscrollBehavior: "none",
         }}
