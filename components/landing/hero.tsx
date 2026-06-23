@@ -1,5 +1,5 @@
 "use client";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useScrollContainer } from "@/components/scroll-container";
@@ -17,29 +17,10 @@ export function Hero() {
     if (!isInternalNav) setShouldAnimate(true);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    container: scrollContainer,
-    offset: ["start start", "end start"],
-  });
-
-  const headlineY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["0%", "-25%"],
-  );
-
-  const headlineScale = useTransform(scrollYProgress, [0, 1], prefersReduced ? [1, 1] : [1, 1.15]);
-
-  const headlineX = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["0%", "-8%"],
-  );
-
-  // Section-level parallax (separate from headline — full viewport pass-through)
+  // Section-level parallax
   const { scrollYProgress: sectionScrollProgress } = useScroll({
     target: sectionRef,
+    container: scrollContainer,
     offset: ["start start", "end start"],
   });
 
@@ -49,14 +30,30 @@ export function Hero() {
     prefersReduced ? ["0vh", "0vh"] : ["0vh", "-8vh"],
   );
 
+  // Scale: 1 → 2.4
+  const headlineScale = useTransform(
+    sectionScrollProgress,
+    [0, 1],
+    prefersReduced ? [1, 1] : [1, 2.4],
+  );
+
+  // Ticker speed: beim Scrollen minimal verlangsamen, ease-out damit Effekt am Ende stärker
+  const tickerDuration = useTransform(
+    sectionScrollProgress,
+    [0, 1],
+    prefersReduced ? [25, 25] : [25, 25.2],
+    { ease: (t) => (t * t * t) * 0.5 },
+  );
+  const tickerDurationCss = useMotionTemplate`${tickerDuration}s`;
+
   return (
     <motion.section
       ref={sectionRef}
       style={{ y: sectionY, willChange: "transform" }}
-      className="bg-signalgray-100 min-h-screen flex flex-col justify-between overflow-hidden"
+      className="bg-signalgray-100 min-h-[100svh] flex flex-col justify-between overflow-hidden"
     >
-      {/* Eyebrow — oben, unter dem fixen Header */}
-      <div className="px-6 md:px-8 pt-20 md:pt-24">
+      {/* Eyebrow — oben, unter dem fixen Header, kein Ticker */}
+      <div className="pt-20 md:pt-24 px-6 md:px-8">
         <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-signalgray-800/50">
           Works with Claude Code · Cursor · OpenCode · Copilot · Codex · Gemini CLI
         </p>
@@ -64,27 +61,33 @@ export function Hero() {
 
       {/* Unterer Block — Mega-Headline + Sub-Text + CTA */}
       <div className="pb-16 md:pb-24">
-        {/* Mega-Headline */}
-        <div className="overflow-hidden mb-6">
+        {/* Mega-Headline Ticker */}
+        <div className="overflow-hidden mb-6" style={{ padding: "0.2em 0" }}>
           <motion.div
             initial={shouldAnimate ? { clipPath: "inset(100% 0 0 0)" } : false}
             animate={{ clipPath: "inset(0% 0 0 0)" }}
             transition={{ duration: 1.25, ease: EASE_ENTER_TUPLE }}
           >
-            <motion.h1
+            <motion.div
               style={{
-                y: headlineY,
                 scale: headlineScale,
-                x: headlineX,
-                fontSize: "clamp(5rem, 15vw, 18rem)",
+                fontSize: "clamp(6.5rem, 19.5vw, 23.4rem)",
                 letterSpacing: "-0.03em",
-                lineHeight: 0.95,
+                lineHeight: 1.4,
                 willChange: "transform",
               }}
-              className="font-extrabold text-signalgray-800 whitespace-nowrap px-6 md:px-8"
             >
-              AI coding that compounds.
-            </motion.h1>
+              <motion.div
+                style={{ animationDuration: tickerDurationCss }}
+                className="ticker-track"
+              >
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className="font-extrabold text-signalgray-800">
+                    AI coding that compounds.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span>
+                ))}
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
 
