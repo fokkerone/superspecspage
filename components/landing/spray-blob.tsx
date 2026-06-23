@@ -77,14 +77,19 @@ void main(){
   vec3 col5=vec3(1.00,0.34,0.00);
   vec3 col6=vec3(0.00,0.88,0.38);
 
-  float ws=b1+b2+b3+b4+b5+b6+0.0001;
-  vec3 col=(col1*b1+col2*b2+col3*b3+col4*b4+col5*b5+col6*b6)/ws;
-
-  vec3 grey=vec3(dot(col,vec3(0.299,0.587,0.114)));
-  col=clamp(mix(grey,col,1.8),0.0,1.0);
+  // Multiply: jede Farbe dunkelt den Hintergrund ab
+  vec3 col = vec3(1.0);
+  col *= mix(vec3(1.0), col1, b1);
+  col *= mix(vec3(1.0), col2, b2);
+  col *= mix(vec3(1.0), col3, b3);
+  col *= mix(vec3(1.0), col4, b4);
+  col *= mix(vec3(1.0), col5, b5);
+  col *= mix(vec3(1.0), col6, b6);
+  col = clamp(col, 0.0, 1.0);
 
   float mx=max(max(max(b1,b2),max(b3,b4)),max(b5,b6));
-  float alpha=clamp(mx*0.88,0.0,0.86);
+  // Schärferer Alpha-Abfall: schwache Ränder werden transparent statt weiß
+  float alpha=clamp(smoothstep(0.05, 0.40, mx)*0.90, 0.0, 0.88);
 
   gl_FragColor=vec4(col,alpha);
 }
