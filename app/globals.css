@@ -153,19 +153,6 @@
   }
 }
 
-@keyframes ticker {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.333%); }
-}
-
-.ticker-track {
-  display: block;
-  white-space: nowrap;
-  animation: ticker 25s linear infinite;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
 
 @layer utilities {
   .link-underline {

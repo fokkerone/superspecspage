@@ -2,29 +2,29 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 mix-blend-difference pointer-events-none">
-      <div className="max-w-5xl mx-auto px-5 md:px-10 h-14 flex items-center justify-between pointer-events-auto">
-        <Link href="/" className="flex items-center">
-          <span className="font-mono font-medium text-sm tracking-tight text-white">
-            SUPER<span style={{ opacity: 0.4 }}>SPECS</span>
+    <header className='fixed top-0 left-0 right-0 z-50 mix-blend-difference pointer-events-none'>
+      <div className='max-w-9xl mx-auto px-5 md:px-10 h-14 flex items-center justify-between pointer-events-auto'>
+        <Link href='/' className='flex items-center'>
+          <span className='font-geist-sans font-bold text-md tracking-tight text-white'>
+            super<span style={{ opacity: 0.4 }}>specs</span>
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm text-white">
-          <Link href="/docs" className="link-underline">
+        <nav className='hidden md:flex items-center gap-6 text-sm text-white'>
+          <Link href='/docs' className='link-underline'>
             Docs
           </Link>
-          <Link href="/#how-it-works" className="link-underline">
+          <Link href='/#how-it-works' className='link-underline'>
             How It Works
           </Link>
-          <Link href="/#features" className="link-underline">
+          <Link href='/#features' className='link-underline'>
             Features
           </Link>
           <Link
-            href="https://github.com/fokkerone/superspecs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline"
+            href='https://github.com/fokkerone/superspecs'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='link-underline'
           >
             GitHub
           </Link>

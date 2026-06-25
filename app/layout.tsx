@@ -22,7 +22,14 @@ export const metadata: Metadata = {
   },
   description:
     "Spec-driven planning. Parallel TDD execution. A wiki that never forgets. The discipline layer that makes AI-driven development actually compound.",
-  keywords: ["AI coding", "spec-driven development", "TDD", "Claude Code", "Cursor", "OpenCode"],
+  keywords: [
+    "AI coding",
+    "spec-driven development",
+    "TDD",
+    "Claude Code",
+    "Cursor",
+    "OpenCode",
+  ],
   authors: [{ name: "SuperSpecs" }],
   openGraph: {
     type: "website",
@@ -30,12 +37,14 @@ export const metadata: Metadata = {
     url: "https://superspecs.dev",
     siteName: "SuperSpecs",
     title: "SuperSpecs — Spec-driven AI development that compounds",
-    description: "Spec-driven planning. Parallel TDD execution. A wiki that never forgets.",
+    description:
+      "Spec-driven planning. Parallel TDD execution. A wiki that never forgets.",
   },
   twitter: {
     card: "summary_large_image",
     title: "SuperSpecs — Spec-driven AI development that compounds",
-    description: "Spec-driven planning. Parallel TDD execution. A wiki that never forgets.",
+    description:
+      "Spec-driven planning. Parallel TDD execution. A wiki that never forgets.",
   },
 };
 
@@ -46,15 +55,15 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang='en'
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="antialiased">
+      <body className='antialiased bg-zinc-900'>
         <ScrollContainer>
           <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
+            attribute='class'
+            defaultTheme='dark'
             enableSystem
             disableTransitionOnChange
           >
