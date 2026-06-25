@@ -3,6 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { useScrollContainer } from "@/components/scroll-container";
 import { EASE_ENTER_TUPLE } from "@/lib/easing";
+import { InfiniteBoxCarousel } from "@/components/ui/sidescroller";
 
 export function Features() {
   const features = [
@@ -65,9 +66,9 @@ export function Features() {
       ref={sectionRef}
       id="features"
       style={{ y: sectionY, willChange: "transform" }}
-      className="bg-signalgray-100 py-24 md:py-40 px-5 md:px-10"
+      className="bg-signalgray-100 py-24 md:py-40 overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto px-5 md:px-10">
         <p className="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-signalgray-800/50 mb-4">
           Features
         </p>
@@ -85,26 +86,22 @@ export function Features() {
         >
           Everything a discipline layer needs.
         </motion.h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-signalgray-800/10 rounded-none">
-          {features.map((feature, i) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE_ENTER_TUPLE }}
-              className="bg-signalgray-200 p-10 hover:bg-signalgray-300/20 transition-colors duration-200"
-            >
-              <div className="text-2xl text-signalgray-800/50 mb-4 font-mono">{feature.icon}</div>
-              <h3 className="font-medium text-signalgray-800 mb-3">{feature.title}</h3>
-              <p className="text-signalgray-800/70 text-[1.0625rem] leading-[1.65]">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
       </div>
+
+      <InfiniteBoxCarousel>
+        {features.map((feature) => (
+          <div
+            key={feature.title}
+            className="bg-signalgray-200 p-10 h-full flex flex-col"
+          >
+            <div className="text-2xl text-signalgray-800/50 mb-4 font-mono">{feature.icon}</div>
+            <h3 className="font-medium text-signalgray-800 mb-3">{feature.title}</h3>
+            <p className="text-signalgray-800/70 text-[1.0625rem] leading-[1.65]">
+              {feature.description}
+            </p>
+          </div>
+        ))}
+      </InfiniteBoxCarousel>
     </motion.section>
   );
 }
