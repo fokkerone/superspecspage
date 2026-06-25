@@ -175,6 +175,98 @@ describe("Task 1.4 — reduced motion instant swap", () => {
   });
 });
 
+describe("Task 1.1 — docs-internal navigation skip", () => {
+  beforeEach(() => {
+    mockPathname.mockReturnValue("/docs/a");
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("(a) docs→docs: pathname resolves instantly with no timer needed", async () => {
+    // Mock matchMedia to report NO reduced motion (so the docs-skip is the only early-return path)
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
+    const { PageTransition } = await import("@/components/page-transition");
+
+    const { rerender } = render(
+      <PageTransition>
+        <div>page A</div>
+      </PageTransition>,
+    );
+
+    // Simulate docs-internal navigation
+    mockPathname.mockReturnValue("/docs/b");
+    rerender(
+      <PageTransition>
+        <div data-testid="page-b">page B</div>
+      </PageTransition>,
+    );
+
+    // Should resolve instantly — page B visible without advancing timers
+    expect(screen.getByTestId("page-b")).toBeInTheDocument();
+    // The transitioning overlay (exit-snapshot-scroller) should NOT be present
+    expect(document.querySelector(".exit-snapshot-scroller")).toBeNull();
+  });
+
+  it("(b) marketing→docs: transition enters transitioning state (full animation path)", async () => {
+    // Start on marketing route
+    mockPathname.mockReturnValue("/");
+
+    // Mock matchMedia: no reduced motion
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
+    const { PageTransition } = await import("@/components/page-transition");
+
+    const { rerender } = render(
+      <PageTransition>
+        <div>home page</div>
+      </PageTransition>,
+    );
+
+    // Navigate to docs
+    mockPathname.mockReturnValue("/docs/introduction");
+    rerender(
+      <PageTransition>
+        <div data-testid="docs-page">docs introduction</div>
+      </PageTransition>,
+    );
+
+    // Should be in transitioning state — new page wrapped in translateY(100vh) div,
+    // meaning content is rendered but the exit overlay is also present (or timers pending)
+    // The page content is in the DOM but NOT yet the "live" path (frozen !== pathname)
+    // We detect this by confirming timers are still pending (instant swap was NOT called)
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
+  });
+});
+
 describe("Task 1.4 — no animation code in page files", () => {
   it("app/page.tsx does not import framer-motion", () => {
     const content = readFileSync(resolve(process.cwd(), "app/page.tsx"), "utf-8");

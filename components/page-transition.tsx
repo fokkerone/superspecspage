@@ -70,6 +70,12 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!transitioning) return;
 
+    // Skip animation for docs-internal navigation (sidebar links)
+    if (frozenPathname.startsWith('/docs/') && pathname.startsWith('/docs/')) {
+      setFrozenPathname(pathname);
+      return;
+    }
+
     // Respect prefers-reduced-motion: skip animation entirely, swap instantly
     const prefersReducedMotion =
       typeof window !== "undefined" &&
