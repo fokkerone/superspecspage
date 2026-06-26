@@ -1,3 +1,4 @@
+import rehypeSlug from "rehype-slug";
 import { defineCollection, defineConfig, s } from "velite";
 
 const docs = defineCollection({
@@ -10,6 +11,14 @@ const docs = defineCollection({
     order: s.number().optional().default(99),
     published: s.boolean().default(true),
     body: s.mdx(),
+    toc: s.toc(),
+    tocOverride: s.array(
+      s.object({
+        title: s.string(),
+        id: s.string(),
+        depth: s.number().optional().default(2),
+      }),
+    ).optional(),
   }),
 });
 
@@ -24,7 +33,7 @@ export default defineConfig({
   },
   collections: { docs },
   mdx: {
-    rehypePlugins: [],
+    rehypePlugins: [rehypeSlug],
     remarkPlugins: [],
   },
 });
