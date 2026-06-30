@@ -9,6 +9,15 @@ Full history of all wiki ingest sessions.
 
 ---
 
+## [2026-06-30] ingest | docs-layout: Docs Layout
+
+- **Created:** ui/docs-layout.md
+- **Updated:** ui/page-transitions.md (docs-skip pattern, blink fix, resolved open question on route-type tuning), ui/Home.md, Home.md
+- **Domains touched:** ui
+- **Spec:** [[../specs/docs-layout/spec.md]]
+
+---
+
 ## [2026-06-22] ingest | techstack-session: Tech Stack Profile
 
 - **Created:** techstack/profile.md

@@ -54,10 +54,12 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     } else if (transitioning && !prevTransitioningRef.current) {
       if (exitRef.current && snapshotRef.current) {
         const { node, top } = snapshotRef.current;
-        // A plain div (no transform) so overflow:hidden correctly clips the
-        // translated clone — transforms break overflow clipping on the same element.
+        // transform:translateZ(0) creates a stacking context + containing block for
+        // position:fixed children in the snapshot (e.g. the fixed Header), so they
+        // exit WITH the page instead of escaping to the viewport at z-50.
+        // overflow:hidden clips the translated clone to the visible area.
         const clipper = document.createElement("div");
-        clipper.style.cssText = "position:absolute;inset:0;overflow:hidden";
+        clipper.style.cssText = "position:absolute;inset:0;overflow:hidden;transform:translateZ(0)";
         (node as HTMLElement).style.transform = `translateY(${top}px)`;
         clipper.appendChild(node);
         exitRef.current.appendChild(clipper);
