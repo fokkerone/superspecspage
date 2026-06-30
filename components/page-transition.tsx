@@ -54,10 +54,12 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     } else if (transitioning && !prevTransitioningRef.current) {
       if (exitRef.current && snapshotRef.current) {
         const { node, top } = snapshotRef.current;
-        // A plain div (no transform) so overflow:hidden correctly clips the
-        // translated clone — transforms break overflow clipping on the same element.
+        // transform:translateZ(0) creates a stacking context + containing block for
+        // position:fixed children in the snapshot (e.g. the fixed Header), so they
+        // exit WITH the page instead of escaping to the viewport at z-50.
+        // overflow:hidden clips the translated clone to the visible area.
         const clipper = document.createElement("div");
-        clipper.style.cssText = "position:absolute;inset:0;overflow:hidden";
+        clipper.style.cssText = "position:absolute;inset:0;overflow:hidden;transform:translateZ(0)";
         (node as HTMLElement).style.transform = `translateY(${top}px)`;
         clipper.appendChild(node);
         exitRef.current.appendChild(clipper);
@@ -69,6 +71,15 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!transitioning) return;
+
+    // Skip animation for docs-internal navigation (sidebar links).
+    // Matches /docs and /docs/* — the bare /docs route redirects to /docs/introduction
+    // and must also be treated as a docs route.
+    const isDocsRoute = (p: string) => p === '/docs' || p.startsWith('/docs/');
+    if (isDocsRoute(frozenPathname) && isDocsRoute(pathname)) {
+      setFrozenPathname(pathname);
+      return;
+    }
 
     // Respect prefers-reduced-motion: skip animation entirely, swap instantly
     const prefersReducedMotion =
@@ -114,12 +125,15 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   }, [transitioning, pathname]);
 
   return (
-    <div style={{ position: "relative", minHeight: "100svh" }}>
+    // Dark background prevents the light body (signalgray-100) from flashing
+    // through the scroll container during the one-frame gap between liveRef
+    // unmounting and the exit clone being injected in useLayoutEffect.
+    <div style={{ position: "relative", minHeight: "100svh", backgroundColor: "var(--signalgray-800)" }}>
       {transitioning && (
         <div
           ref={exitRef}
           className="exit-snapshot-scroller"
-          style={{ position: "fixed", inset: 0, zIndex: 0 }}
+          style={{ position: "fixed", inset: 0, zIndex: 0, backgroundColor: "var(--signalgray-800)" }}
         />
       )}
 
@@ -131,6 +145,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
             zIndex: 1,
             minHeight: "100svh",
             transform: "translateY(100vh)",
+            willChange: "transform",
           }}
         >
           {children}

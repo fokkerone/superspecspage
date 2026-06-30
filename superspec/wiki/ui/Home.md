@@ -2,7 +2,7 @@
 title: UI Domain — Index
 tags: [ui, index]
 created: 2026-06-22
-updated: 2026-06-22
+updated: 2026-06-30
 ---
 
 # UI Domain
@@ -19,6 +19,7 @@ Frontend patterns, component architecture, routing behaviour, and styling decisi
 | [[page-transitions]] | Snapshot-clone page transition: DOM clone on mousedown, 1450ms, two-curve easing |
 | [[scroll-architecture]] | Custom scroll container: why it's outside PageTransition, body bg, ScrollContext |
 | [[scroll-motion-system]] | Mega-headline parallax, light/dark sections, whileInView reveals |
+| [[docs-layout]] | Three-column docs layout: sidebar from MDX structure, per-page TOC, no-transition skip pattern |
 
 ## Related domains
 

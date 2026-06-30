@@ -1,3 +1,4 @@
+import rehypeSlug from "rehype-slug";
 import { defineCollection, defineConfig, s } from "velite";
 
 const docs = defineCollection({
@@ -10,6 +11,20 @@ const docs = defineCollection({
     order: s.number().optional().default(99),
     published: s.boolean().default(true),
     body: s.mdx(),
+    toc: s.toc(),
+    tocOverride: s.array(
+      s.object({
+        title: s.string(),
+        id: s.string(),
+        depth: s.number().optional().default(2),
+      }),
+    ).optional(),
+    section: s.path().transform((path) => {
+      // path looks like "docs/getting-started/installation"
+      const parts = path.split("/");
+      // parts[0] = "docs", parts[1] = section or filename, parts[2] = filename (if nested)
+      return parts.length >= 3 ? parts[1] : null;
+    }),
   }),
 });
 
@@ -24,7 +39,7 @@ export default defineConfig({
   },
   collections: { docs },
   mdx: {
-    rehypePlugins: [],
+    rehypePlugins: [rehypeSlug],
     remarkPlugins: [],
   },
 });

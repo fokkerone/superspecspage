@@ -40,7 +40,7 @@
         "Home",
         "log"
       ]
-    }
+    },
     {
       "slug": "scroll-advanced-motion",
       "ingested_at": "2026-06-23T01:45:00Z",
@@ -48,6 +48,17 @@
       "pages_updated": [
         "ui/scroll-motion-system",
         "ui/scroll-architecture",
+        "log"
+      ]
+    },
+    {
+      "slug": "docs-layout",
+      "ingested_at": "2026-06-30T00:00:00Z",
+      "pages_created": ["ui/docs-layout"],
+      "pages_updated": [
+        "ui/page-transitions",
+        "ui/Home",
+        "Home",
         "log"
       ]
     }

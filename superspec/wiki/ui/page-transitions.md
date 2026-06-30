@@ -4,7 +4,7 @@ summary: Snapshot-clone page transition between all routes. The outgoing page sc
 tags: [ui, animation, routing, page-transitions, snapshot-clone, scroll-motion-style]
 spec: "[[../specs/ui-style/spec.md]]"
 created: 2026-06-22
-updated: 2026-06-22
+updated: 2026-06-30
 provenance:
   sources:
     - specs/ui-style/spec.md
@@ -225,6 +225,18 @@ CSS consumers reference the token, not the literal:
 
 - **`exit-snapshot-scroller` CSS:** `globals.css` includes `.exit-snapshot-scroller { scrollbar-width: none }` — retained from the signalgrau reference for the exit overlay container.
 
+- **Docs-internal navigation must skip the transition.** Sidebar links within `/docs/**` should be instant (plain router), not animated. The condition `frozenPathname.startsWith('/docs/')` is insufficient — the bare `/docs` path returns `false` for `startsWith('/docs/')`. Use the `isDocsRoute` helper:
+  ```ts
+  const isDocsRoute = (p: string) => p === '/docs' || p.startsWith('/docs/');
+  if (isDocsRoute(frozenPathname) && isDocsRoute(pathname)) {
+    setFrozenPathname(pathname);
+    return;
+  }
+  ```
+  This check happens first in the `useEffect` — before `prefers-reduced-motion` — so it always fires for docs-internal navigation.
+
+- **Blink/flash at transition start.** The `body` element has `background-color: var(--signalgray-100)` (light). For one frame between `liveRef` unmounting and the exit clone being injected in `useLayoutEffect`, the light body color can flash through. Fix: add `backgroundColor: "var(--signalgray-800)"` to both the outer PageTransition wrapper `div` and the `exitRef` fixed overlay. Also add `willChange: "transform"` to `newRef` for GPU layer promotion.
+
 ## Easing reference
 
 | Constant | Value | Used for |
@@ -236,7 +248,7 @@ CSS consumers reference the token, not the literal:
 
 ## Open Questions
 
-- [ ] Should `TRANSITION_DURATION` be tunable by route type? (docs-to-docs faster than landing-to-docs?) — deferred to post-ship observation.
+- [x] ~~Should `TRANSITION_DURATION` be tunable by route type?~~ — **Resolved by docs-layout (2026-06-30).** Rather than tunable duration, docs-internal navigation is skipped entirely via `isDocsRoute()`. The `1450ms` duration remains unchanged for marketing ↔ docs transitions.
 - [ ] Should browser back/forward navigation also animate, or stay instant? — out of scope.
 - [ ] Is `1450ms` still correct after first real-browser render? — deferred for visual tuning.
 

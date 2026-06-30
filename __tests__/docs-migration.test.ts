@@ -7,6 +7,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
+const veliteConfigPath = resolve(process.cwd(), "velite.config.ts");
+
 const docsLayoutPath = resolve(process.cwd(), "app/docs/layout.tsx");
 const docsPagePath = resolve(process.cwd(), "app/docs/[[...slug]]/page.tsx");
 
@@ -79,5 +81,96 @@ describe("Task 2.9 — Docs prose class migration", () => {
   it("contains prose-th:border-white/15 (bumped from /10)", () => {
     const src = readFileSync(docsPagePath, "utf-8");
     expect(src).toContain("prose-th:border-white/15");
+  });
+});
+
+describe("Task 2.2 — section field", () => {
+  it("(a) velite.config.ts source contains a section field definition", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("section:");
+  });
+
+  it("(b) velite.config.ts source contains the transform logic for section derivation", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("parts.length");
+  });
+});
+
+describe("Task 4.1 — three-column layout", () => {
+  it("(a) app/docs/layout.tsx imports DocsSidebar", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).toContain("DocsSidebar");
+  });
+
+  it("(b) app/docs/[[...slug]]/page.tsx imports DocsTOC", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("DocsTOC");
+  });
+
+  it("(c) app/docs/layout.tsx does NOT import PageTransition or ScrollContainer", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).not.toContain("PageTransition");
+    expect(src).not.toContain("ScrollContainer");
+  });
+
+  it("(d) app/docs/layout.tsx contains hidden lg:block (left sidebar responsive class)", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).toContain("hidden lg:block");
+  });
+
+  it("(e) app/docs/[[...slug]]/page.tsx contains hidden xl:block (right TOC responsive class)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("hidden xl:block");
+  });
+
+  it("(f) app/docs/[[...slug]]/page.tsx contains flattenToc", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("flattenToc");
+  });
+});
+
+describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
+  it("(a) velite.config.ts contains rehype-slug in rehypePlugins", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("rehype-slug");
+    expect(src).toContain("rehypePlugins");
+  });
+
+  it("(b) velite.config.ts contains s.toc() in the docs schema", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("s.toc()");
+  });
+
+  it("(c) velite.config.ts contains the optional frontmatter toc field definition", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("tocOverride");
+    expect(src).toContain("s.array(");
+    expect(src).toContain(".optional()");
+  });
+});
+
+describe("Task 4.2 — MDX order frontmatter", () => {
+  it("(a) content/docs/introduction.mdx contains order: 1", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/introduction.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 1");
+  });
+
+  it("(b) content/docs/quick-start.mdx contains order: 2", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/quick-start.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 2");
+  });
+
+  it("(c) content/docs/how-it-works.mdx contains order: 3", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/how-it-works.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 3");
   });
 });
