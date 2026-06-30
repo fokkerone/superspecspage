@@ -96,6 +96,39 @@ describe("Task 2.2 — section field", () => {
   });
 });
 
+describe("Task 4.1 — three-column layout", () => {
+  it("(a) app/docs/layout.tsx imports DocsSidebar", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).toContain("DocsSidebar");
+  });
+
+  it("(b) app/docs/[[...slug]]/page.tsx imports DocsTOC", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("DocsTOC");
+  });
+
+  it("(c) app/docs/layout.tsx does NOT import PageTransition or ScrollContainer", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).not.toContain("PageTransition");
+    expect(src).not.toContain("ScrollContainer");
+  });
+
+  it("(d) app/docs/layout.tsx contains hidden lg:block (left sidebar responsive class)", () => {
+    const src = readFileSync(docsLayoutPath, "utf-8");
+    expect(src).toContain("hidden lg:block");
+  });
+
+  it("(e) app/docs/[[...slug]]/page.tsx contains hidden xl:block (right TOC responsive class)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("hidden xl:block");
+  });
+
+  it("(f) app/docs/[[...slug]]/page.tsx contains flattenToc", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("flattenToc");
+  });
+});
+
 describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
   it("(a) velite.config.ts contains rehype-slug in rehypePlugins", () => {
     const src = readFileSync(veliteConfigPath, "utf-8");
@@ -113,5 +146,31 @@ describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
     expect(src).toContain("tocOverride");
     expect(src).toContain("s.array(");
     expect(src).toContain(".optional()");
+  });
+});
+
+describe("Task 4.2 — MDX order frontmatter", () => {
+  it("(a) content/docs/introduction.mdx contains order: 1", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/introduction.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 1");
+  });
+
+  it("(b) content/docs/quick-start.mdx contains order: 2", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/quick-start.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 2");
+  });
+
+  it("(c) content/docs/how-it-works.mdx contains order: 3", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/how-it-works.mdx"),
+      "utf-8"
+    );
+    expect(src).toContain("order: 3");
   });
 });
