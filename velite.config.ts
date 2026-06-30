@@ -19,6 +19,12 @@ const docs = defineCollection({
         depth: s.number().optional().default(2),
       }),
     ).optional(),
+    section: s.path().transform((path) => {
+      // path looks like "docs/getting-started/installation"
+      const parts = path.split("/");
+      // parts[0] = "docs", parts[1] = section or filename, parts[2] = filename (if nested)
+      return parts.length >= 3 ? parts[1] : null;
+    }),
   }),
 });
 

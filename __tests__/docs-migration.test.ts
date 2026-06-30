@@ -7,6 +7,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
+const veliteConfigPath = resolve(process.cwd(), "velite.config.ts");
+
 const docsLayoutPath = resolve(process.cwd(), "app/docs/layout.tsx");
 const docsPagePath = resolve(process.cwd(), "app/docs/[[...slug]]/page.tsx");
 
@@ -79,5 +81,37 @@ describe("Task 2.9 — Docs prose class migration", () => {
   it("contains prose-th:border-white/15 (bumped from /10)", () => {
     const src = readFileSync(docsPagePath, "utf-8");
     expect(src).toContain("prose-th:border-white/15");
+  });
+});
+
+describe("Task 2.2 — section field", () => {
+  it("(a) velite.config.ts source contains a section field definition", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("section:");
+  });
+
+  it("(b) velite.config.ts source contains the transform logic for section derivation", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("parts.length");
+  });
+});
+
+describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
+  it("(a) velite.config.ts contains rehype-slug in rehypePlugins", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("rehype-slug");
+    expect(src).toContain("rehypePlugins");
+  });
+
+  it("(b) velite.config.ts contains s.toc() in the docs schema", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("s.toc()");
+  });
+
+  it("(c) velite.config.ts contains the optional frontmatter toc field definition", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("tocOverride");
+    expect(src).toContain("s.array(");
+    expect(src).toContain(".optional()");
   });
 });
