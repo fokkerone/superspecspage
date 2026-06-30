@@ -70,8 +70,11 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!transitioning) return;
 
-    // Skip animation for docs-internal navigation (sidebar links)
-    if (frozenPathname.startsWith('/docs/') && pathname.startsWith('/docs/')) {
+    // Skip animation for docs-internal navigation (sidebar links).
+    // Matches /docs and /docs/* — the bare /docs route redirects to /docs/introduction
+    // and must also be treated as a docs route.
+    const isDocsRoute = (p: string) => p === '/docs' || p.startsWith('/docs/');
+    if (isDocsRoute(frozenPathname) && isDocsRoute(pathname)) {
       setFrozenPathname(pathname);
       return;
     }
@@ -120,12 +123,15 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   }, [transitioning, pathname]);
 
   return (
-    <div style={{ position: "relative", minHeight: "100svh" }}>
+    // Dark background prevents the light body (signalgray-100) from flashing
+    // through the scroll container during the one-frame gap between liveRef
+    // unmounting and the exit clone being injected in useLayoutEffect.
+    <div style={{ position: "relative", minHeight: "100svh", backgroundColor: "var(--signalgray-800)" }}>
       {transitioning && (
         <div
           ref={exitRef}
           className="exit-snapshot-scroller"
-          style={{ position: "fixed", inset: 0, zIndex: 0 }}
+          style={{ position: "fixed", inset: 0, zIndex: 0, backgroundColor: "var(--signalgray-800)" }}
         />
       )}
 
@@ -137,6 +143,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
             zIndex: 1,
             minHeight: "100svh",
             transform: "translateY(100vh)",
+            willChange: "transform",
           }}
         >
           {children}

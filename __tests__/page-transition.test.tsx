@@ -259,11 +259,48 @@ describe("Task 1.1 — docs-internal navigation skip", () => {
       </PageTransition>,
     );
 
-    // Should be in transitioning state — new page wrapped in translateY(100vh) div,
-    // meaning content is rendered but the exit overlay is also present (or timers pending)
-    // The page content is in the DOM but NOT yet the "live" path (frozen !== pathname)
-    // We detect this by confirming timers are still pending (instant swap was NOT called)
+    // Should be in transitioning state — timers pending means instant swap was NOT called
     expect(vi.getTimerCount()).toBeGreaterThan(0);
+  });
+
+  it("(c) /docs→/docs/introduction: bare /docs route is treated as docs-internal (no transition)", async () => {
+    // The bare /docs route must match the isDocsRoute check, same as /docs/*
+    mockPathname.mockReturnValue("/docs");
+
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
+    const { PageTransition } = await import("@/components/page-transition");
+
+    const { rerender } = render(
+      <PageTransition>
+        <div>docs root</div>
+      </PageTransition>,
+    );
+
+    // Navigate from /docs to /docs/introduction (second-level nav)
+    mockPathname.mockReturnValue("/docs/introduction");
+    rerender(
+      <PageTransition>
+        <div data-testid="docs-intro">introduction</div>
+      </PageTransition>,
+    );
+
+    // Should resolve instantly — no timers, no exit overlay
+    expect(screen.getByTestId("docs-intro")).toBeInTheDocument();
+    expect(document.querySelector(".exit-snapshot-scroller")).toBeNull();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
 
