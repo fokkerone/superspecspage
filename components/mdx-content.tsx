@@ -3,10 +3,12 @@
 import { useMemo } from "react";
 import * as runtime from "react/jsx-runtime";
 import { Steps, Step } from "@/components/docs/steps";
+import { Callout } from "@/components/docs/callout";
 
 const components = {
   Steps,
   Step,
+  Callout,
 };
 
 function useMDXComponent(code: string) {
