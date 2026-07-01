@@ -1,0 +1,17 @@
+---
+title: Design Principles
+description: The core principles that shape how SuperSpecs plans, executes, and ships work
+order: 13
+---
+
+# Design Principles
+
+**Plan fits a fresh context window.** No executor should need prior chat history to understand their task. If the plan is too big, it gets decomposed.
+
+**Tests first, always.** Code written before tests gets deleted. No exceptions. RED before GREEN.
+
+**Critical issues block progress.** A `/superspecs:code-review` finding rated Critical is not a suggestion. Nothing moves forward until it's resolved.
+
+**Knowledge outlives the session.** The wiki uses the Karpathy LLM Wiki pattern: raw sources are compiled once into structured, interlinked pages. Future sessions query the wiki — not the raw specs. Knowledge compounds; problems stay solved.
+
+**One branch per spec.** Isolation prevents interference between parallel workstreams.
