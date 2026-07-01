@@ -32,7 +32,7 @@ export function Step({ title, children, index, isLast }: StepProps) {
       data-testid="doc-step"
       className={`relative pl-8 ${isLast ? "pb-0" : "border-l border-white/10 pb-8"}`}
     >
-      <span className="absolute -left-3 top-0 flex h-6 w-6 items-center justify-center rounded-sm border border-white/15 bg-black font-mono text-sm font-medium text-white/70">
+      <span className="absolute -left-3 top-0 flex h-6 w-6 items-center justify-center rounded-sm border border-white/15 bg-signalgray-900 font-mono text-sm font-medium text-white/70">
         {number}
       </span>
       <h4 className="font-normal text-white">{title}</h4>
