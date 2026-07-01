@@ -187,6 +187,18 @@ describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
 // (see __tests__/docs-content-getting-started.test.ts, which covers the
 // same "order frontmatter" intent for their replacements).
 
+describe("Task fix — @tailwindcss/typography plugin actually registered", () => {
+  it("(a) package.json declares @tailwindcss/typography as a dependency", () => {
+    const src = readFileSync(resolve(process.cwd(), "package.json"), "utf-8");
+    expect(src).toContain("@tailwindcss/typography");
+  });
+
+  it("(b) globals.css registers the typography plugin via @plugin directive", () => {
+    const src = readFileSync(resolve(process.cwd(), "app/globals.css"), "utf-8");
+    expect(src).toContain('@plugin "@tailwindcss/typography"');
+  });
+});
+
 describe("Typography refresh — opengsd-inspired heading/body/table hierarchy on dark theme", () => {
   it("(a) heading scale: h1 largest, h2 mid, h3 smallest, matching opengsd's proportional hierarchy", () => {
     const src = readFileSync(docsPagePath, "utf-8");
