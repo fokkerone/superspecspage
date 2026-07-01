@@ -2,7 +2,7 @@
 title: UI Domain — Index
 tags: [ui, index]
 created: 2026-06-22
-updated: 2026-06-30
+updated: 2026-07-01
 ---
 
 # UI Domain
@@ -15,11 +15,11 @@ Frontend patterns, component architecture, routing behaviour, and styling decisi
 |------|---------|
 | [[design-system]] | Signalgray palette, CSS token architecture, typography, shape rules, font-extrabold exception |
 | [[easing]] | Two-curve easing system (`EASE_ENTER` / `EASE_EXIT`), `lib/easing.ts` |
-| [[component-patterns]] | Link-underline, CTA patterns A+B, section label, card grid, terminal mockup |
+| [[component-patterns]] | Link-underline, CTA patterns A+B, section label, card grid, terminal mockup, docs Steps/Callout shortcodes |
 | [[page-transitions]] | Snapshot-clone page transition: DOM clone on mousedown, 1450ms, two-curve easing |
 | [[scroll-architecture]] | Custom scroll container: why it's outside PageTransition, body bg, ScrollContext |
 | [[scroll-motion-system]] | Mega-headline parallax, light/dark sections, whileInView reveals |
-| [[docs-layout]] | Three-column docs layout: sidebar from MDX structure, per-page TOC, no-transition skip pattern |
+| [[docs-layout]] | Three-column docs layout, 11-page content sitemap, Shiki syntax highlighting, Steps/Callout MDX shortcodes, @tailwindcss/typography gotcha |
 
 ## Related domains
 

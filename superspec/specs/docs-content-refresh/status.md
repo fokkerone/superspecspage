@@ -6,10 +6,12 @@
 - Regressions: none
 
 ## Wiki Pages
-(pending — Stage 2 of /superspecs:verify)
+- [[ui/docs-layout]] — updated: 11-page content sitemap, Shiki/rehype-pretty-code pipeline (+ `keepBackground: false` gotcha), Steps/Callout MDX shortcodes, critical `@tailwindcss/typography` registration gotcha
+- [[ui/component-patterns]] — updated: Steps/Callout pattern entries
+- [[techstack/profile]] — updated: Shiki marked active, docs-structure open question resolved
 
 ## Phase
-3 — Verify ✅ (Stage 1 complete)
+3 — Verify ✅ (complete)
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)

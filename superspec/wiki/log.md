@@ -9,6 +9,15 @@ Full history of all wiki ingest sessions.
 
 ---
 
+## [2026-07-01] ingest | docs-content-refresh: Docs Content Refresh
+
+- **Created:** none — all knowledge merged into existing pages
+- **Updated:** ui/docs-layout.md (11-page content sitemap, non-overlapping `order` ranges, Shiki/rehype-pretty-code pipeline + `keepBackground: false` gotcha, Steps/Callout MDX shortcodes, critical `@tailwindcss/typography` registration gotcha), ui/component-patterns.md (Steps/Callout pattern entries), techstack/profile.md (Shiki marked active, docs-structure open question resolved), Home.md
+- **Domains touched:** ui, techstack
+- **Spec:** [[../specs/docs-content-refresh/spec.md]]
+
+---
+
 ## [2026-06-30] ingest | docs-layout: Docs Layout
 
 - **Created:** ui/docs-layout.md
