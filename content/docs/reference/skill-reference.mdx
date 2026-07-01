@@ -1,0 +1,30 @@
+---
+title: Skill Reference
+description: Every SuperSpecs skill, its command, and what it does — organized by phase
+order: 21
+---
+
+# Skill Reference
+
+| Phase   | Skill               | Command                      | What it does                                                                 |
+| ------- | ------------------- | ----------------------------- | ----------------------------------------------------------------------------- |
+| Setup   | `techstack`         | `/superspecs:techstack`      | Questionnaire: define stack, recommend skills & libraries, save wiki profile |
+| Plan    | `design-import`     | `/superspecs:design-import`  | Optional enrichment: reads DesignOS export, creates `design-context.md` for `/discuss` + `/spec` to use |
+| Plan    | `plan-discuss`      | `/superspecs:discuss`        | Capture decisions before planning                                            |
+| Plan    | `plan-spec`         | `/superspecs:spec`           | Write OpenSpec-style spec                                                    |
+| Plan    | `plan-grill`        | `/superspecs:grill`          | Stress-test spec against wiki + techstack, blocks execution until READY      |
+| Execute | `execute-pick-spec` | `/superspecs:pick-spec`      | Choose + validate next spec                                                  |
+| Execute | `execute-branch`    | `/superspecs:branch`         | Create branch / worktree                                                     |
+| Execute | `execute-subagent`  | `/superspecs:subagent`       | Parallel subagent task execution                                             |
+| Execute | `execute-tdd`       | `/superspecs:tdd`            | RED-GREEN-REFACTOR — runs inside each subagent task; invoke standalone for code outside subagent mode |
+| Execute | `execute-review`    | `/superspecs:code-review`    | Between-task spec + quality review                                           |
+| Verify  | `verify`            | `/superspecs:verify`         | Stage 1: full suite + scenario coverage; Stage 2: compile feature to wiki    |
+| Wiki    | `wiki-query`        | `/superspecs:wiki-query`     | Tiered retrieval query; optionally file answer back as a page                |
+| Wiki    | `wiki-lint`         | `/superspecs:wiki-lint`      | Health check: orphans, broken links, contradictions, stale refs              |
+| Wiki    | `cross-linker`      | `/superspecs:cross-linker`   | Auto-insert `[[wikilinks]]` for unlinked mentions across the vault           |
+| Wiki    | `wiki-status`       | `/superspecs:wiki-status`    | Vault dashboard: size, hubs, tag stats, provenance, pending sources          |
+| Wiki    | `wiki-capture`      | `/superspecs:wiki-capture`   | Save session findings to wiki (`--quick` stages to raw/, `--full` ingests)   |
+| Wiki    | `tag-taxonomy`      | `/superspecs:tag-taxonomy`   | Canonical tag vocabulary; audit and normalize tags vault-wide                |
+| Wiki    | `wiki-rebuild`      | `/superspecs:wiki-rebuild`   | Archive + rebuild vault; restore from snapshot                               |
+| Ship    | `ship`              | `/superspecs:ship`           | PR + archive + next cycle                                                    |
+| Meta    | `skill-creator`     | `/superspecs:skill-creator`  | Create a new SuperSpecs skill to extend the framework                        |
