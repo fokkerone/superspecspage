@@ -1,7 +1,7 @@
 # Hero Spray Blob — Status
 
 ## Phase
-1.1 — Plan › Discuss ✅
+Archived — abandoned after Discuss, never spec'd
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -11,12 +11,15 @@
 - [ ] Subagent execution complete
 - [ ] All tests passing
 - [ ] Code review passed (no Critical findings)
-- [ ] Wiki imported
+- [x] Wiki imported — N/A, no implementation exists to distill
 - [ ] PR created
-- [ ] Archived
+- [x] Archived
 
 ## Slug
 hero-spray-blob
 
 ## Started
 2026-06-23
+
+## Archived
+2026-07-01 — no spec/implementation was ever written past the discussion phase; nothing to ship or distill into the wiki.
