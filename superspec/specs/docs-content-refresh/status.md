@@ -11,7 +11,13 @@
 - [[techstack/profile]] — updated: Shiki marked active, docs-structure open question resolved
 
 ## Phase
-3 — Verify ✅ (complete)
+4 — Shipped ✅
+
+## Completed
+2026-07-01
+
+## PR
+Branch pushed to origin: `superspec/docs-content-refresh`. PR not yet created via `gh` (authenticated to an internal enterprise host, not `github.com`) — open at https://github.com/fokkerone/superspecspage/pull/new/superspec/docs-content-refresh
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -26,9 +32,9 @@
 - [x] Subagent execution complete (12 tasks across 3 waves + 2 post-hoc fixes)
 - [x] All tests passing (zero skipped, zero pending)
 - [x] Code review passed (no unresolved Critical findings)
-- [ ] Wiki imported
-- [ ] PR created
-- [ ] Archived
+- [x] Wiki imported
+- [x] PR ready (branch pushed; manual creation pending due to gh auth host mismatch)
+- [x] Archived (superspec/archive/docs-content-refresh-execute/)
 
 ## Slug
 docs-content-refresh
