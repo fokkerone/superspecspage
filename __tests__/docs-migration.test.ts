@@ -187,6 +187,57 @@ describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
 // (see __tests__/docs-content-getting-started.test.ts, which covers the
 // same "order frontmatter" intent for their replacements).
 
+describe("Typography refresh — opengsd-inspired heading/body/table hierarchy on dark theme", () => {
+  it("(a) heading scale: h1 largest, h2 mid, h3 smallest, matching opengsd's proportional hierarchy", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-h1:text-4xl");
+    expect(src).toContain("prose-h2:text-3xl");
+    expect(src).toContain("prose-h3:text-xl");
+  });
+
+  it("(b) heading spacing: h1 mb-6, h2 mt-12/mb-4, h3 mt-8/mb-2", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-h1:mb-6");
+    expect(src).toContain("prose-h2:mt-12");
+    expect(src).toContain("prose-h2:mb-4");
+    expect(src).toContain("prose-h3:mt-8");
+    expect(src).toContain("prose-h3:mb-2");
+  });
+
+  it("(c) body paragraph spacing: prose-p:mb-4 added", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-p:mb-4");
+  });
+
+  it("(d) code block padding matches opengsd's spacious 1.5rem (prose-pre:p-6)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-pre:p-6");
+  });
+
+  it("(e) list indentation and item spacing added (prose-ul/ol:pl-6, prose-li:mb-2)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-ul:pl-6");
+    expect(src).toContain("prose-ol:pl-6");
+    expect(src).toContain("prose-li:mb-2");
+  });
+
+  it("(f) table cell padding matches opengsd's spacious 0.75rem/1rem (prose-th/td:px-4 py-3)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-th:px-4");
+    expect(src).toContain("prose-th:py-3");
+    expect(src).toContain("prose-td:px-4");
+    expect(src).toContain("prose-td:py-3");
+  });
+
+  it("(g) no forbidden colors/weights introduced while matching opengsd proportions", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).not.toContain("font-bold");
+    expect(src).not.toContain("font-semibold");
+    expect(src).not.toMatch(/text-blue-|text-\[#2563eb\]|text-\[#1d4ed8\]/);
+    expect(src).not.toContain("bg-black");
+  });
+});
+
 describe("Task 3.2 — Default /docs route resolves to the new introduction slug", () => {
   it("app/docs/[[...slug]]/page.tsx falls back to docs/getting-started/introduction, not docs/introduction", () => {
     const src = readFileSync(docsPagePath, "utf-8");
