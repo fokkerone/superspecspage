@@ -1,7 +1,13 @@
 # Docs Layout — Status
 
 ## Phase
-3 — Verify ✅
+4 — Shipped ✅
+
+## Completed
+2026-07-01
+
+## PR
+#1 (merged)
 
 ## Checklist
 - [x] Discussion complete (DISCUSS.md)
@@ -17,8 +23,8 @@
 - [x] All tests passing (315 passing, 0 failing, 0 skipped — docs-layout: 114/114)
 - [x] Code review passed (no Critical findings across 6 tasks)
 - [x] Wiki imported
-- [ ] PR created
-- [ ] Archived
+- [x] PR created (#1, merged)
+- [x] Archived
 
 ## Test Results
 - Suite: 315 passing, 0 failing, 0 skipped

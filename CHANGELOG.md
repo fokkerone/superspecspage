@@ -8,6 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **Docs Layout** (`docs-layout` spec):
+  - Three-column docs layout (`DocsSidebar` left, content center, `DocsTOC` right) — responsive: sidebar hidden below `lg`, TOC hidden below `xl`
+  - `DocsSidebar` with section grouping, `order`-based sort, and active-link highlight via `usePathname()`
+  - `DocsTOC` with `scrollIntoView` click handler — works inside `ScrollContainer` (no native `#id` navigation)
+  - Velite docs schema extended with `toc` (auto-extracted via `s.toc()` + `rehype-slug`, or overridden by frontmatter) and `section` (derived from slug path)
+  - `PageTransition` conditional skip for docs-internal navigation — no animation between `/docs/*` routes
+  - 114 new tests — 315 total, 15/15 spec scenarios covered
+  - Wiki: `ui/docs-layout`, updated `ui/page-transitions`
+
 - **Advanced Scroll Motion** (`scroll-advanced-motion` spec):
   - Headline `scale(1.0→1.15)` + `x(0%→-8%)` scroll transforms — 3 simultaneous transforms on mega-headline (Y, Scale, X)
   - Section-level parallax on all 7 landing sections: `y: 0vh → -10vh` (dark), `0vh → -8vh` (light) — sections float slightly faster than native scroll
