@@ -1,7 +1,7 @@
 ---
 title: Quick Start
-description: Get SuperSpecs running in your project in under 5 minutes
-order: 2
+description: Get SuperSpecs running in your project and ship your first feature
+order: 3
 ---
 
 # Quick Start
@@ -20,20 +20,15 @@ superspecs install
 npx superspecs install
 ```
 
-## First Session
+Then open your agent and say: **"Tell me about your superspecs"**
 
-Open your agent and say: **"Tell me about your superspecs"**
+> **Command format by agent**
+> - Claude Code / Cursor: `/superspecs:techstack`
+> - OpenCode / Aider: `/superspecs-techstack`
 
-The agent will confirm SuperSpecs is active and explain the available commands.
+> **Wiki as Obsidian vault** — after `superspecs install`, open `superspec/wiki/` in [Obsidian](https://obsidian.md) as a vault. Graph view, backlinks, and tag search work out of the box.
 
-## Command Format by Agent
-
-| Agent | Format |
-|---|---|
-| Claude Code / Cursor | `/superspecs:techstack` |
-| OpenCode / Aider | `/superspecs-techstack` |
-
-## First Feature Workflow
+## First Feature
 
 ```
 /superspecs:techstack    Define stack, get skill & library recommendations
@@ -43,6 +38,8 @@ The agent will confirm SuperSpecs is active and explain the available commands.
 /superspecs:pick-spec    Confirm it fits a clean context
 /superspecs:branch       Create worktree
 /superspecs:subagent     Start execution (TDD runs inside each task)
+/superspecs:tdd          Standalone: enforce RED-GREEN-REFACTOR outside subagent
+/superspecs:code-review  Check between tasks
 /superspecs:check-tests  Verify everything passes
 /superspecs:wiki         Distill to knowledge base
 /superspecs:ship         PR + archive

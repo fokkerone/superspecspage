@@ -1,10 +1,10 @@
 ---
 title: Component Patterns — UI Primitives
-summary: Reusable UI patterns for the SuperSpecs landing page and docs. Link-underline hover scrub, CTA button variants (Pattern A text link, Pattern B bordered rectangle), section label eyebrow, and card grid layout.
-tags: [ui, components, patterns, hover, cta, ui-style]
+summary: Reusable UI patterns for the SuperSpecs landing page and docs. Link-underline hover scrub, CTA button variants (Pattern A text link, Pattern B bordered rectangle), section label eyebrow, card grid layout, and docs-only Steps/Callout MDX shortcodes.
+tags: [ui, components, patterns, hover, cta, ui-style, docs-content-refresh]
 spec: "[[../specs/ui-style/spec.md]]"
 created: 2026-06-22
-updated: 2026-06-22
+updated: 2026-07-01
 provenance:
   sources:
     - specs/ui-style/spec.md
@@ -13,6 +13,10 @@ provenance:
     - components/landing/hero.tsx
     - components/landing/install.tsx
     - app/globals.css
+    - specs/docs-content-refresh/spec.md
+    - specs/docs-content-refresh/GRILL.md
+    - components/docs/steps.tsx
+    - components/docs/callout.tsx
   extracted: ~75%
   inferred: ~20%
   ambiguous: ~5%
@@ -200,6 +204,30 @@ The `opacity: 0.4` on the "SPECS" portion creates visual hierarchy within the wo
 ```
 
 Sections are separated by `border-t border-white/10` on the section element itself — not `<hr>` tags or `border-b` on the preceding section.
+
+### Steps / Step (docs MDX shortcode)
+
+Ordered, titled sequence — used for the docs workflow page's four-phase lifecycle. Registered as an MDX component in `components/mdx-content.tsx`, not used on the marketing pages.
+
+```tsx
+<span className="absolute -left-3 top-0 flex h-6 w-6 items-center justify-center rounded-sm border border-white/15 bg-signalgray-900 font-mono text-sm font-medium text-white/70">
+  {String(index).padStart(2, "0")}
+</span>
+```
+
+Step numbers deliberately use a small `font-mono text-sm` marker, not this site's large decorative phase-number scale (`clamp(4rem, 8vw, 7rem)`) — that scale is reserved for full-bleed section dividers on the landing page, not inline doc content. Connector between steps: `border-l border-white/10`. See `components/docs/steps.tsx`; full context in [[docs-layout#mdx-shortcodes-steps--callout]].
+
+### Callout (docs MDX shortcode)
+
+Single-style supplementary-info block — no `type`/variant prop, no color-coded info/warning/error states.
+
+```tsx
+<div className="border-l-2 border-white/15 bg-white/[0.03] px-4 py-3 text-white/70">
+  {children}
+</div>
+```
+
+The absence of a `type` prop is deliberate, not an oversight: color-coded callout variants were proposed and rejected during the `docs-content-refresh` spec grill, since they'd introduce accent colors this site explicitly forbids (see "No icon libraries" and "no accent color" below). See `components/docs/callout.tsx`.
 
 ## Iconography
 

@@ -1,0 +1,146 @@
+---
+title: Wiki Operations
+description: The wiki commands — ingest, query, lint, cross-link, status, capture, tag taxonomy, rebuild — and when to run each one
+order: 22
+---
+
+# Wiki Operations
+
+The wiki is a compiled, structured knowledge base that outlives every session. It implements the **Karpathy LLM Wiki pattern**: raw source material is compiled once into interlinked markdown pages. Future sessions query the compiled wiki — never the raw specs. Compile once, query fast. Knowledge compounds.
+
+## Ingest — `/superspecs:wiki`
+
+Run after every `/superspecs:ship`. Compiles a completed, verified feature into the wiki.
+
+**What it does:**
+
+1. Reads raw source material — `DISCUSS.md`, `spec.md`, `review-log.md`, key implementation files
+2. **Scans existing wiki pages first** — updates a page if the topic already exists, never creates duplicates
+3. Writes new pages with full frontmatter:
+   - `summary:` — 1–2 sentence preview (used by `/superspecs:wiki-query` for fast retrieval)
+   - `tags:` — from `_meta/taxonomy.md` canonical vocabulary
+   - `provenance:` — tracks what % of content is extracted vs. inferred
+   - `[[wikilinks]]` for all internal cross-references
+4. Updates domain `Home.md` index and vault `Home.md`
+5. Appends to `wiki/log.md`
+6. Updates `_manifest.json`
+
+**Provenance tracking** — every page marks claim origins:
+- No marker = extracted directly from source material
+- `^[inferred]` = agent synthesis, not stated verbatim
+- `^[ambiguous]` = sources disagree or claim is uncertain
+
+**What it distills:** architecture decisions, patterns, gotchas, key interfaces, open questions.
+**What it does NOT copy:** full code listings, task checklists, or the spec itself.
+
+## Query — `/superspecs:wiki-query`
+
+Ask a question; get an answer synthesized from the compiled wiki using **tiered retrieval**.
+
+```
+"What do we know about error handling?"
+"What was the decision on the database choice?"
+"Find everything about the payment integration."
+```
+
+**Tiered retrieval — cost stays flat as the vault grows:**
+
+1. **Phase 1 (cheap):** scan frontmatter only — `title`, `tags`, `summary:` — across all pages. Score relevance, select top 3–5 candidates
+2. **Phase 2 (targeted):** open full body of top candidates only. Follow `[[wikilinks]]` one level deep
+
+Say **"quick answer"** or **"just scan"** to force index-only mode (Phase 1 only).
+
+**Key rule:** reads `wiki/` only — never `raw/`, never specs, never source code.
+
+**Optional:** file the answer back as a new wiki page — useful for synthesized cross-domain knowledge.
+
+## Lint — `/superspecs:wiki-lint`
+
+Periodic health check. Finds structural and semantic problems.
+
+| Check | What it finds |
+|-------|--------------|
+| **Orphaned pages** | Pages with no inbound `[[wikilinks]]` |
+| **Broken wikilinks** | `[[links]]` pointing to non-existent pages |
+| **Missing cross-links** | Page A mentions a topic with its own page B but doesn't link to it |
+| **Contradictions** | Two pages make conflicting claims about the same decision or pattern |
+| **Stale file refs** | Backtick paths pointing to files that no longer exist |
+| **Missing frontmatter** | Pages missing `title`, `tags`, `summary:`, `created`, or `updated` |
+| **Undocumented domains** | Domain folder exists but has no `Home.md` |
+| **Domain drift** | Domain folder exists but isn't listed in `_meta/taxonomy.md` (typo, duplicate, or unregistered) |
+
+Output: `wiki/_lint-report.md` + appended `log.md`. Auto-fixes safe issues with confirmation; contradictions always require human review.
+
+## Cross-link — `/superspecs:cross-linker`
+
+Automatically weave `[[wikilinks]]` across the vault. Run after any ingest to connect new knowledge to existing pages.
+
+**What it does:**
+1. Builds a map of all page titles and aliases
+2. Scans every page body for unlinked mentions of other page titles
+3. Inserts `[[wikilinks]]` for first occurrences only (not inside code blocks or headings)
+4. Reports every change made
+
+**Guards:** skips aliases shorter than 4 characters, generic English words, self-references, and anything already linked.
+
+## Status — `/superspecs:wiki-status`
+
+Dashboard of the vault's current state.
+
+```
+VAULT SIZE       32 pages across 6 domains
+RECENT ACTIVITY  Last ingest: 2026-06-19 (auth-flow)
+HUB PAGES        [[auth/jwt-refresh]] (12 backlinks), [[patterns/error-handling]] (9)
+TAG DISTRIBUTION auth (14)  api (11)  patterns (9) ...
+PROVENANCE       Extracted: 72%  Inferred: 23%  Ambiguous: 5%
+PENDING          2 specs not yet compiled, 1 raw/ file not yet ingested
+HEALTH           3 orphans, 1 broken link (run /superspecs:wiki-lint for details)
+```
+
+Optionally writes a full `_insights.md` to the vault.
+
+## Capture — `/superspecs:wiki-capture`
+
+Save findings from the current session before the context window resets.
+
+- **`--quick` (default):** stages a structured draft to `wiki/raw/capture-<timestamp>.md` in under 60 seconds. The next `/wiki` run promotes it to proper pages.
+- **`--full`:** distills directly to wiki pages following the full ingest process.
+
+**What gets captured:** decisions made, bugs fixed and their root causes, patterns discovered, gotchas, open questions. Noise is dropped.
+
+## Tag Taxonomy — `/superspecs:tag-taxonomy`
+
+Maintain a controlled vocabulary so tags stay consistent across the vault.
+
+- `_meta/taxonomy.md` — the canonical tag list (domain tags, topic tags, aliases)
+- **Audit mode:** scans all pages, finds non-canonical tags, proposes normalization
+- **Normalize mode:** applies fixes after confirmation — updates frontmatter across the vault
+- **Init mode:** first run with no taxonomy — scans all existing tags and proposes a vocabulary
+
+## Rebuild — `/superspecs:wiki-rebuild`
+
+When the wiki has accumulated too much drift, archive and rebuild from scratch.
+
+| Mode | What it does |
+|------|-------------|
+| `archive` | Snapshot current vault to `_archives/<timestamp>/` |
+| `rebuild` | Archive + wipe compiled wiki + recompile all shipped specs + raw files |
+| `restore <timestamp>` | Roll back to a previous archive (auto-archives current state first) |
+| `list` | Show all available snapshots |
+
+**Safety rules:** never touches `raw/`, `.obsidian/`, `log.md`, or `_archives/`. Always archives before any destructive operation. Always asks for confirmation.
+
+## When to run each command
+
+| When | Command |
+|------|---------|
+| After every `/ship` | `/superspecs:wiki <slug>` |
+| After ingest — connect new pages | `/superspecs:cross-linker` |
+| Before new planning cycle | `/superspecs:wiki-query "What do we know about X?"` |
+| Before `/grill` — check existing decisions | `/superspecs:wiki-query` |
+| Mid-session — save important findings | `/superspecs:wiki-capture` |
+| Drop article/doc into `raw/` | `/superspecs:wiki <filename>` |
+| Check vault health + domain drift | `/superspecs:wiki-status` |
+| Tags getting inconsistent | `/superspecs:tag-taxonomy` |
+| Monthly / before a release | `/superspecs:wiki-lint` |
+| Wiki has too much drift | `/superspecs:wiki-rebuild` |

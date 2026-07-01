@@ -1,23 +1,30 @@
 ---
 title: Docs Layout
-summary: Three-column documentation layout — left sidebar derived from MDX content structure, center article, right TOC. No transitions between doc pages. Mintlify-inspired aesthetic adapted to Signalgray design system.
-tags: [ui, docs, layout, mdx, velite, toc, sidebar, docs-layout]
+summary: Three-column documentation layout — left sidebar derived from MDX content structure, center article, right TOC. No transitions between doc pages. Mintlify-inspired aesthetic adapted to Signalgray design system. 11-page content sitemap, Shiki syntax highlighting, Steps/Callout MDX shortcodes, and a critical @tailwindcss/typography registration gotcha added by docs-content-refresh.
+tags: [ui, docs, layout, mdx, velite, toc, sidebar, docs-layout, shiki, syntax-highlighting, tailwind-typography, docs-content-refresh]
 spec: "[[../specs/docs-layout/spec.md]]"
 created: 2026-06-30
-updated: 2026-06-30
+updated: 2026-07-01
 provenance:
   sources:
     - specs/docs-layout/spec.md
     - specs/docs-layout/GRILL.md
     - phases/docs-layout-execute/review-log.md
+    - specs/docs-content-refresh/spec.md
+    - specs/docs-content-refresh/GRILL.md
+    - phases/docs-content-refresh-execute/review-log.md
     - components/docs/docs-sidebar.tsx
     - components/docs/docs-toc.tsx
+    - components/docs/steps.tsx
+    - components/docs/callout.tsx
+    - components/mdx-content.tsx
     - app/docs/layout.tsx
     - app/docs/[[...slug]]/page.tsx
     - velite.config.ts
+    - app/globals.css
   extracted: ~75%
-  inferred: ~20%
-  ambiguous: ~5%
+  inferred: ~15%
+  ambiguous: ~10%
 ---
 
 # Docs Layout
@@ -240,18 +247,72 @@ type FlatTocEntry = {
 };
 ```
 
+## Content Sitemap (docs-content-refresh)
+
+The original 3 stub pages (`introduction.mdx`, `quick-start.mdx`, `how-it-works.mdx`) were replaced with an 11-page sitemap derived from `.superspecs/README.md`, `.superspecs/HOWITWORKS.md`, `.superspecs/LOCALDEVELOPMENT.md`, organized into four sidebar sections:
+
+| Section | Pages | `order` range |
+|---|---|---|
+| Getting Started | introduction, installation, quick-start | 1–3 |
+| Concepts | workflow, the-wiki, design-principles | 11–13 |
+| Reference | skill-reference, wiki-operations | 21–22 |
+| Development | how-skills-work, creating-a-skill, local-development | 31–33 |
+
+**Non-overlapping `order` ranges are load-bearing, not cosmetic.** `DocsSidebar` sorts all docs globally by `order` then `title`, and derives section display order from first-appearance in that sorted list. If every section's first page used `order: 1`, ties would fall back to alphabetical title sort and scramble the intended section sequence (verified during the `docs-content-refresh` grill session by reading `docs-sidebar.tsx` directly). Any new section added in the future needs its own reserved `order` block (e.g. next available: 41+).
+
+## Syntax Highlighting Pipeline
+
+`rehype-pretty-code` (Shiki-based) was added to `velite.config.ts`'s `mdx.rehypePlugins`, **after** `rehype-slug` in the array (order matters — slug must run first so heading IDs still generate). Theme: `vitesse-dark`, chosen as the closest stock Shiki theme to `signalgray-800`'s warm oklch tone (avoided pure-blue/black themes like `github-dark`).
+
+```ts
+mdx: {
+  rehypePlugins: [
+    rehypeSlug,
+    [rehypePrettyCode, { theme: "vitesse-dark", keepBackground: false }],
+  ],
+}
+```
+
+**`keepBackground: false` gotcha:** `rehype-pretty-code` bakes its own inline `style={{backgroundColor:...}}` onto the compiled `<pre>` element by default. Inline styles always win over Tailwind utility classes regardless of specificity, so without this option the existing `prose-pre:bg-white/[0.04]` class is silently overridden by a near-black `#121212` background baked into the compiled MDX output. Setting `keepBackground: false` removes Shiki's own background/color inline styles from the `<pre>` wrapper (per-token `<span style={{color:...}}>` syntax-color spans are unaffected), letting the Tailwind prose classes control the container background as intended.
+
+## MDX Shortcodes: Steps / Callout
+
+Two new MDX components, registered in `components/mdx-content.tsx`'s `components` map (passed as `<Component components={components} />` to the compiled MDX function):
+
+- **`<Steps>`/`<Step title="...">`** (`components/docs/steps.tsx`) — ordered container for sequential content (used for the four-phase workflow page). Step numbers render as plain `font-mono text-sm` zero-padded numerals (`01`, `02`...) in a `rounded-sm` marker box on `bg-signalgray-900` — explicitly NOT the site's large decorative `clamp(4rem, 8vw, 7rem)` phase-number type scale, which is reserved for full-bleed section dividers elsewhere on the site. Connector: `border-l border-white/10`.
+- **`<Callout>`** (`components/docs/callout.tsx`) — single visual style only (`border-l-2 border-white/15 bg-white/[0.03]`), deliberately has **no `type`/variant prop**. Color-coded variants (info/warning/error) were considered and explicitly rejected during spec grilling — they'd violate the site's "no accent color, hierarchy via opacity/weight/spacing only" rule (see [[component-patterns]]).
+
+Both components must accept and spread through arbitrary props (especially `id`, injected by `rehype-slug` on headings) — a naive override that doesn't spread `...props` silently breaks TOC scroll-to-heading behavior.
+
+## Critical Gotcha: `@tailwindcss/typography` was never registered
+
+**This is the most expensive lesson from this feature.** The original `docs-layout` phase built the entire docs page around Tailwind's `prose`/`prose-h1:*`/`prose-invert` element-modifier classes — but `@tailwindcss/typography` was never added as a dependency, and no `@plugin "@tailwindcss/typography";` directive existed in `app/globals.css`. Result: **every prose class across the whole docs feature had zero effect from day one.** Headings, body text, code blocks, tables all rendered as bare unstyled HTML.
+
+This went undetected through the entire `docs-layout` spec, its grill session, and this feature's Wave 1/2/3 code reviews, because this repo's dominant test style is source-string assertion (`expect(src).toContain("prose-h1:text-4xl")`) — which only proves a class *name* string exists in a source file, never that the plugin exists or that any CSS rule is actually generated for it. It was only caught when a human opened the page in a real browser and reported "html tags wie h1 h2 etc haben keine klassen aus dem mdx."
+
+**Fix:** `npm install -D @tailwindcss/typography` + add `@plugin "@tailwindcss/typography";` to `app/globals.css` (Tailwind v4 CSS-first plugin registration — no `tailwind.config.js` in this project).
+
+**Process implication:** any future task that adds or modifies `prose-*` (or any other Tailwind-plugin-dependent) classes needs a live dev-server/browser check as part of its Done criteria — source-string tests alone cannot catch a missing plugin registration.
+
 ## Open Questions
 
 - [ ] Mobile navigation: sidebar is `hidden lg:block`. No mobile nav (hamburger, drawer) exists yet. Will be needed when docs are published for non-desktop users.
 - [ ] Search across docs content — not implemented. Velite compiles all content at build time, making a simple fuse.js client-side search viable.
 - [ ] TOC active-section highlighting on scroll — not implemented. Would require `IntersectionObserver` inside the ScrollContainer.
+- [ ] No page yet uses `<Callout>` in real content (only component-level tests exercise it) — candidate: the two blockquote-style asides in `getting-started/quick-start.mdx`.
 
 ## Related
 
 - [[page-transitions]] — docs-skip pattern + blink fix are documented as gotchas there
 - [[scroll-architecture]] — custom ScrollContainer is why native hash scrolling doesn't work
+- [[component-patterns]] — Steps/Callout join the existing pattern library; no-accent-color and shape rules governed the Callout "no type prop" decision
+- [[design-system]] — signalgray tokens used by Steps' marker background; typography proportions matched to opengsd while staying inside this palette
 - `components/docs/docs-sidebar.tsx` — sidebar component
 - `components/docs/docs-toc.tsx` — TOC component
+- `components/docs/steps.tsx` — Steps/Step MDX shortcode
+- `components/docs/callout.tsx` — Callout MDX shortcode
+- `components/mdx-content.tsx` — MDX component map (Steps/Step/Callout registration)
 - `app/docs/layout.tsx` — Server Component layout
-- `app/docs/[[...slug]]/page.tsx` — page with flattenToc + DocsTOC
-- `velite.config.ts` — Velite schema with s.toc(), section transform, rehypeSlug
+- `app/docs/[[...slug]]/page.tsx` — page with flattenToc + DocsTOC + prose typography classes
+- `velite.config.ts` — Velite schema with s.toc(), section transform, rehypeSlug, rehype-pretty-code
+- `superspec/specs/docs-content-refresh/spec.md` — full requirements for this content refresh

@@ -2,17 +2,25 @@
 
 import { useMemo } from "react";
 import * as runtime from "react/jsx-runtime";
+import { Steps, Step } from "@/components/docs/steps";
+import { Callout } from "@/components/docs/callout";
+
+const components = {
+  Steps,
+  Step,
+  Callout,
+};
 
 function useMDXComponent(code: string) {
   return useMemo(() => {
     const fn = new Function(code);
     return fn({ ...runtime }).default as React.ComponentType<{
-      components?: Record<string, React.ComponentType>;
+      components?: Record<string, React.ComponentType<any>>;
     }>;
   }, [code]);
 }
 
 export function MDXContent({ code }: { code: string }) {
   const Component = useMDXComponent(code);
-  return <Component />;
+  return <Component components={components} />;
 }

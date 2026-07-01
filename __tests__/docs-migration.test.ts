@@ -149,28 +149,130 @@ describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
   });
 });
 
-describe("Task 4.2 — MDX order frontmatter", () => {
-  it("(a) content/docs/introduction.mdx contains order: 1", () => {
-    const src = readFileSync(
-      resolve(process.cwd(), "content/docs/introduction.mdx"),
-      "utf-8"
-    );
-    expect(src).toContain("order: 1");
+describe("Task 1.1 — Syntax highlighting via rehype-pretty-code", () => {
+  it("(a) velite.config.ts contains rehype-pretty-code in the rehypePlugins array", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("rehype-pretty-code");
+    expect(src).toContain("rehypePlugins");
   });
 
-  it("(b) content/docs/quick-start.mdx contains order: 2", () => {
-    const src = readFileSync(
-      resolve(process.cwd(), "content/docs/quick-start.mdx"),
-      "utf-8"
-    );
-    expect(src).toContain("order: 2");
+  it("(b) rehype-slug appears before rehype-pretty-code (slug runs first)", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    const slugIndex = src.indexOf("rehype-slug");
+    const prettyCodeIndex = src.indexOf("rehype-pretty-code");
+    expect(slugIndex).toBeGreaterThan(-1);
+    expect(prettyCodeIndex).toBeGreaterThan(-1);
+    expect(slugIndex).toBeLessThan(prettyCodeIndex);
+  });
+});
+
+describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
+  it("(a) app/docs/[[...slug]]/page.tsx still contains the established prose-pre dark-theme classes unchanged", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-pre:bg-white/[0.04]");
+    expect(src).toContain("prose-pre:border");
+    expect(src).toContain("prose-pre:border-white/10");
+    expect(src).toContain("prose-pre:rounded-lg");
   });
 
-  it("(c) content/docs/how-it-works.mdx contains order: 3", () => {
+  it("(b) velite.config.ts disables rehype-pretty-code's own inline background so Tailwind's prose-pre background controls layering", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("keepBackground: false");
+  });
+});
+
+// Task 4.2's original assertions covered content/docs/introduction.mdx,
+// quick-start.mdx, and how-it-works.mdx directly. The docs-content-refresh
+// spec superseded those three stub files with a section-organized sitemap
+// (see __tests__/docs-content-getting-started.test.ts, which covers the
+// same "order frontmatter" intent for their replacements).
+
+describe("Task fix — @tailwindcss/typography plugin actually registered", () => {
+  it("(a) package.json declares @tailwindcss/typography as a dependency", () => {
+    const src = readFileSync(resolve(process.cwd(), "package.json"), "utf-8");
+    expect(src).toContain("@tailwindcss/typography");
+  });
+
+  it("(b) globals.css registers the typography plugin via @plugin directive", () => {
+    const src = readFileSync(resolve(process.cwd(), "app/globals.css"), "utf-8");
+    expect(src).toContain('@plugin "@tailwindcss/typography"');
+  });
+});
+
+describe("Typography refresh — opengsd-inspired heading/body/table hierarchy on dark theme", () => {
+  it("(a) heading scale: h1 largest, h2 mid, h3 smallest, matching opengsd's proportional hierarchy", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-h1:text-4xl");
+    expect(src).toContain("prose-h2:text-3xl");
+    expect(src).toContain("prose-h3:text-xl");
+  });
+
+  it("(b) heading spacing: h1 mb-6, h2 mt-12/mb-4, h3 mt-8/mb-2", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-h1:mb-6");
+    expect(src).toContain("prose-h2:mt-12");
+    expect(src).toContain("prose-h2:mb-4");
+    expect(src).toContain("prose-h3:mt-8");
+    expect(src).toContain("prose-h3:mb-2");
+  });
+
+  it("(c) body paragraph spacing: prose-p:mb-4 added", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-p:mb-4");
+  });
+
+  it("(d) code block padding matches opengsd's spacious 1.5rem (prose-pre:p-6)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-pre:p-6");
+  });
+
+  it("(e) list indentation and item spacing added (prose-ul/ol:pl-6, prose-li:mb-2)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-ul:pl-6");
+    expect(src).toContain("prose-ol:pl-6");
+    expect(src).toContain("prose-li:mb-2");
+  });
+
+  it("(f) table cell padding matches opengsd's spacious 0.75rem/1rem (prose-th/td:px-4 py-3)", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-th:px-4");
+    expect(src).toContain("prose-th:py-3");
+    expect(src).toContain("prose-td:px-4");
+    expect(src).toContain("prose-td:py-3");
+  });
+
+  it("(g) no forbidden colors/weights introduced while matching opengsd proportions", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).not.toContain("font-bold");
+    expect(src).not.toContain("font-semibold");
+    expect(src).not.toMatch(/text-blue-|text-\[#2563eb\]|text-\[#1d4ed8\]/);
+    expect(src).not.toContain("bg-black");
+  });
+});
+
+describe("Task 3.3 — untagged code fence renders without a build error", () => {
+  it("(a) content/docs/development/how-skills-work.mdx contains an untagged ``` fence (real-world coverage for the 'no language' spec scenario)", () => {
     const src = readFileSync(
-      resolve(process.cwd(), "content/docs/how-it-works.mdx"),
+      resolve(process.cwd(), "content/docs/development/how-skills-work.mdx"),
       "utf-8"
     );
-    expect(src).toContain("order: 3");
+    expect(src).toMatch(/```\n[^`]/);
+  });
+
+  it("(b) the compiled Velite output for that page has no error markers and includes real rendered structure (pre/figure)", () => {
+    const veliteDocsPath = resolve(process.cwd(), ".velite/docs.json");
+    const docs = JSON.parse(readFileSync(veliteDocsPath, "utf-8"));
+    const doc = docs.find((d: { slug: string }) => d.slug === "docs/development/how-skills-work");
+    expect(doc).toBeDefined();
+    expect(doc.body).toContain("pre");
+    expect(doc.body).toContain("figure");
+  });
+});
+
+describe("Task 3.2 — Default /docs route resolves to the new introduction slug", () => {
+  it("app/docs/[[...slug]]/page.tsx falls back to docs/getting-started/introduction, not docs/introduction", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("getting-started/introduction");
+    expect(src).not.toMatch(/slug\s*&&\s*slug\.length > 0 \? slug\.join\("\/"\) : "introduction"/);
   });
 });

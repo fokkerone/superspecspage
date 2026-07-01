@@ -67,4 +67,17 @@ describe('DocsSidebar', () => {
     const parent = introLink.parentElement
     expect(parent?.tagName.toLowerCase()).toBe('nav')
   })
+
+  it('(h) Task 3.1 — four docs-content-refresh sections render in order Getting Started, Concepts, Reference, Development', () => {
+    const realWorldDocs = [
+      { title: 'Introduction', slug: 'docs/getting-started/introduction', order: 1, section: 'getting-started' },
+      { title: 'Workflow', slug: 'docs/concepts/workflow', order: 11, section: 'concepts' },
+      { title: 'Skill Reference', slug: 'docs/reference/skill-reference', order: 21, section: 'reference' },
+      { title: 'How Skills Work', slug: 'docs/development/how-skills-work', order: 31, section: 'development' },
+    ]
+    render(<DocsSidebar docs={realWorldDocs} />)
+    const labels = screen.getAllByText(/Getting Started|Concepts|Reference|Development/, { selector: 'p' })
+    const labelText = labels.map((l) => l.textContent)
+    expect(labelText).toEqual(['Getting Started', 'Concepts', 'Reference', 'Development'])
+  })
 })

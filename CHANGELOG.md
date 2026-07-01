@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **Docs Content Refresh** (`docs-content-refresh` spec):
+  - Replaced 3 hand-written stub doc pages with an 11-page sitemap derived from `.superspecs/README.md`, `.superspecs/HOWITWORKS.md`, `.superspecs/LOCALDEVELOPMENT.md`, grouped into four sidebar sections (Getting Started, Concepts, Reference, Development)
+  - Real syntax-highlighted code blocks via `rehype-pretty-code` + Shiki (`vitesse-dark` theme)
+  - New `<Steps>`/`<Step>` and `<Callout>` MDX shortcodes, registered in `MDXContent`'s component map
+  - Fixed default `/docs` route resolution (was 404ing after the sitemap change)
+  - Fixed a pre-existing bug from the `docs-layout` phase: `@tailwindcss/typography` was never registered, so every `prose-*` class site-wide had been inert since that phase shipped
+  - Docs typography (heading/body/table hierarchy) scaled to match `docs.opengsd.net`'s proportions, kept within the existing dark signalgray theme
+  - 43 new tests — 354 total passing, 13/13 spec scenarios covered
+  - Wiki: updated `ui/docs-layout`, `ui/component-patterns`, `techstack/profile`
+
 - **Docs Layout** (`docs-layout` spec):
   - Three-column docs layout (`DocsSidebar` left, content center, `DocsTOC` right) — responsive: sidebar hidden below `lg`, TOC hidden below `xl`
   - `DocsSidebar` with section grouping, `order`-based sort, and active-link highlight via `usePathname()`

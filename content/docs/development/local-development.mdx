@@ -1,0 +1,90 @@
+---
+title: Local Development
+description: Working on the framework, updating it, and uninstalling it
+order: 33
+---
+
+# Local Development
+
+## Working on the Framework
+
+The framework's source of truth is the `.skills/` directory. Each skill is a single `SKILL.md` file.
+
+```
+.skills/
+├── plan-discuss/SKILL.md
+├── plan-spec/SKILL.md
+├── execute-pick-spec/SKILL.md
+├── execute-branch/SKILL.md
+├── execute-subagent/SKILL.md
+├── execute-tdd/SKILL.md
+├── execute-review/SKILL.md
+├── verify/SKILL.md
+├── verify-tests/SKILL.md
+├── verify-wiki/SKILL.md
+├── ship/SKILL.md
+└── skill-creator/SKILL.md
+```
+
+**Edit a skill:**
+
+```bash
+# Edit the source file directly
+$EDITOR .skills/execute-tdd/SKILL.md
+
+# Re-run setup to propagate symlinks (only needed if you added a new skill)
+bash setup.sh
+```
+
+Because the installed files are symlinks back to `.skills/`, edits to a `SKILL.md` take effect immediately for all agents — no re-run of `setup.sh` required unless you add or rename a skill directory.
+
+**Add a new skill:**
+
+1. Create `.skills/<your-skill>/SKILL.md`
+2. Run `bash setup.sh` — it will symlink the new file everywhere
+
+**Remove a skill:**
+
+1. Delete `.skills/<skill-name>/`
+2. Remove the dangling symlinks manually or run `setup.sh` again (it uses `ln -sf`, so stale links pointing to deleted files remain — remove them by hand if needed)
+
+## Updating the Framework
+
+### Global clone
+
+```bash
+cd ~/.superspecs
+git pull
+bash setup.sh   # refreshes symlinks
+```
+
+### Per-project clone
+
+```bash
+cd your-project/.superspecs
+git pull
+bash setup.sh
+```
+
+### npm global
+
+```bash
+npm update -g superspecs
+superspecs install
+```
+
+## Uninstalling
+
+Symlinks can be removed with a one-liner:
+
+```bash
+# Remove global symlinks
+find ~/.claude/skills ~/.agents/skills ~/.codex/skills ~/.gemini/skills \
+     -name "*.md" -type l -delete 2>/dev/null
+
+# Remove project-level symlinks (run from project root)
+find .claude/skills .agents/skills .cursor/skills .windsurf/skills \
+     -name "*.md" -type l -delete 2>/dev/null
+```
+
+The `superspec/` directory (specs, wiki, phases) is your project data — it is not touched by uninstall.

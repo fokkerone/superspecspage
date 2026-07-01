@@ -1,0 +1,16 @@
+---
+title: Creating a New Skill
+description: How to add a new skill to the framework
+order: 32
+---
+
+# Creating a New Skill
+
+The `/superspecs:skill-creator` meta-skill documents the full process. In short:
+
+1. Create `.skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`, `slash_command`, `phase`)
+2. Write the step-by-step instructions in the body
+3. Run `bash setup.sh` (or `superspecs install`) to:
+   - Symlink the skill into all agent skill directories (auto-discovery)
+   - Generate a clean command file in each agent's commands directory (slash invocation)
+4. Open your agent and invoke the new slash command to test it

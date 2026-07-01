@@ -2,8 +2,8 @@
 title: Tech Stack Profile
 tags: [techstack, setup, infrastructure]
 created: 2026-06-22
-updated: 2026-06-22
-sources: [techstack-session]
+updated: 2026-07-01
+sources: [techstack-session, docs-content-refresh]
 summary: Marketing landing page + documentation site for the SuperSpecs AI coding framework. Next.js 15 SSG, TypeScript, Tailwind CSS, shadcn/ui, Velite for MDX content, deployed on Vercel.
 ---
 
@@ -57,7 +57,7 @@ SuperSpecs homepage: a marketing landing page combined with full project documen
 | `@shadcn/ui` | UI components on Tailwind | required |
 | `velite@latest` | MDX/YAML content layer for docs | required |
 | `next-mdx-remote` | MDX rendering in Next.js | recommended |
-| `shiki` | syntax highlighting in docs | recommended |
+| `shiki` | syntax highlighting in docs (via `rehype-pretty-code`) | **active** — `vitesse-dark` theme |
 | `next-themes` | dark/light mode | optional |
 | `framer-motion` | animations for landing page | optional |
 
@@ -102,7 +102,7 @@ SuperSpecs homepage: a marketing landing page combined with full project documen
 - [ ] `generateMetadata()` für jede Route (title, description, og:image)
 - [ ] `sitemap.xml` und `robots.txt` generiert (App Router built-in)
 - [ ] Alle Velite Content-Schemas vollständig typisiert
-- [ ] Shiki Syntax Highlighting für alle Code-Blöcke im Doku-Teil
+- [x] Shiki Syntax Highlighting für alle Code-Blöcke im Doku-Teil — done via `rehype-pretty-code`, see [[../ui/docs-layout]]
 - [ ] Dark Mode via `next-themes` ohne Flash-of-unstyled-content
 - [ ] Alle shadcn/ui Komponenten mit ARIA-Attributen geprüft (axe-core)
 - [ ] `next/image` für alle Bilder (keine raw `<img>` Tags)
@@ -148,7 +148,7 @@ SuperSpecs homepage: a marketing landing page combined with full project documen
 
 ## Open Questions
 
-- [ ] Welche Docs-Struktur? (Guides / API Reference / Changelog als separate Sections?)
+- [x] Welche Docs-Struktur? — resolved by `docs-content-refresh`: four sections (Getting Started, Concepts, Reference, Development), 11 pages total. See [[../ui/docs-layout]].
 - [ ] Newsletter / Waitlist-Signup benötigt? (würde eine Serverless Function erfordern)
 - [ ] i18n? (Deutsch + Englisch, oder nur Englisch?)
 - [ ] Versionierung der Doku? (ein Branch pro Major-Version oder single latest?)

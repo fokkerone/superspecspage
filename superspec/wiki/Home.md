@@ -8,13 +8,16 @@ Spec-driven knowledge base for the SuperSpecs homepage project.
 
 | Domain | Pages | Last updated |
 |--------|-------|-------------|
-| [[techstack/profile\|techstack]] | 1 | 2026-06-22 |
-| [[ui/Home\|ui]] | 7 | 2026-06-30 |
+| [[techstack/profile\|techstack]] | 1 | 2026-07-01 |
+| [[ui/Home\|ui]] | 7 | 2026-07-01 |
 
 ---
 
 ## Recent Updates
 
+- 2026-07-01: [[ui/docs-layout]] — Updated: docs-content-refresh — 11-page content sitemap, Shiki/rehype-pretty-code syntax highlighting, Steps/Callout MDX shortcodes, critical @tailwindcss/typography registration gotcha
+- 2026-07-01: [[ui/component-patterns]] — Updated: Steps/Callout docs MDX shortcode patterns added
+- 2026-07-01: [[techstack/profile]] — Updated: Shiki marked active, docs-structure open question resolved
 - 2026-06-30: [[ui/docs-layout]] — Three-column docs layout, Velite s.toc() gotcha, rehype-slug, no-transition skip, ScrollContainer hash-scroll workaround
 - 2026-06-22: [[ui/scroll-architecture]] — Custom scroll container, ScrollContainer outside PageTransition, body bg signalgray-100
 - 2026-06-22: [[ui/scroll-motion-system]] — Mega-headline parallax, light/dark sections, whileInView reveals

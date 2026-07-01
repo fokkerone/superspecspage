@@ -1,4 +1,5 @@
 import rehypeSlug from "rehype-slug";
+import rehypePrettyCode from "rehype-pretty-code";
 import { defineCollection, defineConfig, s } from "velite";
 
 const docs = defineCollection({
@@ -39,7 +40,10 @@ export default defineConfig({
   },
   collections: { docs },
   mdx: {
-    rehypePlugins: [rehypeSlug],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypePrettyCode, { theme: "vitesse-dark", keepBackground: false }],
+    ],
     remarkPlugins: [],
   },
 });
