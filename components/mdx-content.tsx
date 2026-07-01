@@ -2,6 +2,12 @@
 
 import { useMemo } from "react";
 import * as runtime from "react/jsx-runtime";
+import { Steps, Step } from "@/components/docs/steps";
+
+const components = {
+  Steps,
+  Step,
+};
 
 function useMDXComponent(code: string) {
   return useMemo(() => {
@@ -14,5 +20,5 @@ function useMDXComponent(code: string) {
 
 export function MDXContent({ code }: { code: string }) {
   const Component = useMDXComponent(code);
-  return <Component />;
+  return <Component components={components} />;
 }
