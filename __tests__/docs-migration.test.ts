@@ -250,6 +250,25 @@ describe("Typography refresh — opengsd-inspired heading/body/table hierarchy o
   });
 });
 
+describe("Task 3.3 — untagged code fence renders without a build error", () => {
+  it("(a) content/docs/development/how-skills-work.mdx contains an untagged ``` fence (real-world coverage for the 'no language' spec scenario)", () => {
+    const src = readFileSync(
+      resolve(process.cwd(), "content/docs/development/how-skills-work.mdx"),
+      "utf-8"
+    );
+    expect(src).toMatch(/```\n[^`]/);
+  });
+
+  it("(b) the compiled Velite output for that page has no error markers and includes real rendered structure (pre/figure)", () => {
+    const veliteDocsPath = resolve(process.cwd(), ".velite/docs.json");
+    const docs = JSON.parse(readFileSync(veliteDocsPath, "utf-8"));
+    const doc = docs.find((d: { slug: string }) => d.slug === "docs/development/how-skills-work");
+    expect(doc).toBeDefined();
+    expect(doc.body).toContain("pre");
+    expect(doc.body).toContain("figure");
+  });
+});
+
 describe("Task 3.2 — Default /docs route resolves to the new introduction slug", () => {
   it("app/docs/[[...slug]]/page.tsx falls back to docs/getting-started/introduction, not docs/introduction", () => {
     const src = readFileSync(docsPagePath, "utf-8");
