@@ -166,6 +166,21 @@ describe("Task 1.1 — Syntax highlighting via rehype-pretty-code", () => {
   });
 });
 
+describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
+  it("(a) app/docs/[[...slug]]/page.tsx still contains the established prose-pre dark-theme classes unchanged", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("prose-pre:bg-white/[0.04]");
+    expect(src).toContain("prose-pre:border");
+    expect(src).toContain("prose-pre:border-white/10");
+    expect(src).toContain("prose-pre:rounded-lg");
+  });
+
+  it("(b) velite.config.ts disables rehype-pretty-code's own inline background so Tailwind's prose-pre background controls layering", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("keepBackground: false");
+  });
+});
+
 describe("Task 4.2 — MDX order frontmatter", () => {
   it("(a) content/docs/introduction.mdx contains order: 1", () => {
     const src = readFileSync(

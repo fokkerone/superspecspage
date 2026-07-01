@@ -42,7 +42,7 @@ export default defineConfig({
   mdx: {
     rehypePlugins: [
       rehypeSlug,
-      [rehypePrettyCode, { theme: "vitesse-dark" }],
+      [rehypePrettyCode, { theme: "vitesse-dark", keepBackground: false }],
     ],
     remarkPlugins: [],
   },
