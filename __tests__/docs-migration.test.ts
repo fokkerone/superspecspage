@@ -181,28 +181,8 @@ describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
   });
 });
 
-describe("Task 4.2 — MDX order frontmatter", () => {
-  it("(a) content/docs/introduction.mdx contains order: 1", () => {
-    const src = readFileSync(
-      resolve(process.cwd(), "content/docs/introduction.mdx"),
-      "utf-8"
-    );
-    expect(src).toContain("order: 1");
-  });
-
-  it("(b) content/docs/quick-start.mdx contains order: 2", () => {
-    const src = readFileSync(
-      resolve(process.cwd(), "content/docs/quick-start.mdx"),
-      "utf-8"
-    );
-    expect(src).toContain("order: 2");
-  });
-
-  it("(c) content/docs/how-it-works.mdx contains order: 3", () => {
-    const src = readFileSync(
-      resolve(process.cwd(), "content/docs/how-it-works.mdx"),
-      "utf-8"
-    );
-    expect(src).toContain("order: 3");
-  });
-});
+// Task 4.2's original assertions covered content/docs/introduction.mdx,
+// quick-start.mdx, and how-it-works.mdx directly. The docs-content-refresh
+// spec superseded those three stub files with a section-organized sitemap
+// (see __tests__/docs-content-getting-started.test.ts, which covers the
+// same "order frontmatter" intent for their replacements).
