@@ -15,7 +15,7 @@ function flattenToc(nodes: VeliteTocNode[], depth = 1): FlatTocEntry[] {
 }
 
 async function getDoc(slug: string[] | undefined) {
-  const slugStr = slug && slug.length > 0 ? slug.join("/") : "introduction";
+  const slugStr = slug && slug.length > 0 ? slug.join("/") : "getting-started/introduction";
   try {
     const { docs } = await import("@/.velite");
     return docs.find((doc) => doc.slug === `docs/${slugStr}`);

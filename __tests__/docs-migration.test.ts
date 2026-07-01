@@ -186,3 +186,11 @@ describe("Task 1.2 — Styling highlighted code blocks for dark theme", () => {
 // spec superseded those three stub files with a section-organized sitemap
 // (see __tests__/docs-content-getting-started.test.ts, which covers the
 // same "order frontmatter" intent for their replacements).
+
+describe("Task 3.2 — Default /docs route resolves to the new introduction slug", () => {
+  it("app/docs/[[...slug]]/page.tsx falls back to docs/getting-started/introduction, not docs/introduction", () => {
+    const src = readFileSync(docsPagePath, "utf-8");
+    expect(src).toContain("getting-started/introduction");
+    expect(src).not.toMatch(/slug\s*&&\s*slug\.length > 0 \? slug\.join\("\/"\) : "introduction"/);
+  });
+});
