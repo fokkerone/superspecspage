@@ -149,6 +149,23 @@ describe("Task 2.1 — Velite config: rehype-slug and s.toc()", () => {
   });
 });
 
+describe("Task 1.1 — Syntax highlighting via rehype-pretty-code", () => {
+  it("(a) velite.config.ts contains rehype-pretty-code in the rehypePlugins array", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    expect(src).toContain("rehype-pretty-code");
+    expect(src).toContain("rehypePlugins");
+  });
+
+  it("(b) rehype-slug appears before rehype-pretty-code (slug runs first)", () => {
+    const src = readFileSync(veliteConfigPath, "utf-8");
+    const slugIndex = src.indexOf("rehype-slug");
+    const prettyCodeIndex = src.indexOf("rehype-pretty-code");
+    expect(slugIndex).toBeGreaterThan(-1);
+    expect(prettyCodeIndex).toBeGreaterThan(-1);
+    expect(slugIndex).toBeLessThan(prettyCodeIndex);
+  });
+});
+
 describe("Task 4.2 — MDX order frontmatter", () => {
   it("(a) content/docs/introduction.mdx contains order: 1", () => {
     const src = readFileSync(
