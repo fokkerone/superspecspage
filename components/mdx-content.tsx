@@ -15,7 +15,7 @@ function useMDXComponent(code: string) {
   return useMemo(() => {
     const fn = new Function(code);
     return fn({ ...runtime }).default as React.ComponentType<{
-      components?: Record<string, React.ComponentType>;
+      components?: Record<string, React.ComponentType<any>>;
     }>;
   }, [code]);
 }
